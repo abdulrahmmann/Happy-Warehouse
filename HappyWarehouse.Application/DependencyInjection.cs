@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using HappyWarehouse.Application.Common;
+using HappyWarehouse.Application.Features.UsersFeature.Commands.ChangePassword;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.DeleteUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.LoginUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.UpdateUser;
@@ -30,6 +31,7 @@ public static class DependencyInjection
         services.AddTransient<ICommandHandler<LoginUserCommand, AuthenticationResponse>, LoginUserCommandHandler>();
         services.AddTransient<ICommandHandler<UpdateUserCommand, AuthenticationResponse>, UpdateUserCommandHandler>();
         services.AddTransient<ICommandHandler<SoftDeleteUserCommand, AuthenticationResponse>, SoftDeleteUserCommandHandler>();
+        services.AddTransient<ICommandHandler<ChangePasswordCommand, AuthenticationResponse>, ChangePasswordCommandHandler>();
         
         return services;
     }

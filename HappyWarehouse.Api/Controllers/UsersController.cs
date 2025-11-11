@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using HappyWarehouse.Application.Common;
+using HappyWarehouse.Application.Features.UsersFeature.Commands.ChangePassword;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.DeleteUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.LoginUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.UpdateUser;
@@ -38,6 +39,15 @@ namespace HappyWarehouse.Controllers
             var response = await _dispatcher.SendCommandAsync<UpdateUserCommand, AuthenticationResponse>(command);
             return NewResult(response);
         }
+        
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword([FromQuery] string email, [FromBody] ChangePasswordDto passwordDto)
+        {
+            var command = new ChangePasswordCommand(email, passwordDto);
+            var response = await _dispatcher.SendCommandAsync<ChangePasswordCommand, AuthenticationResponse>(command);
+            return NewResult(response);
+        }
+
         
         [HttpDelete("soft-delete")]
         public async Task<IActionResult> SoftDeleteUser([FromQuery] string email)
