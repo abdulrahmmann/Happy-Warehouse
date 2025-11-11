@@ -51,6 +51,17 @@ public class AuthenticationResponse
             Message = message
         };
     }
+    
+    public static AuthenticationResponse Success(string message, IEnumerable<string>? errors = null, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
+    {
+        return new AuthenticationResponse
+        {
+            Message = message,
+            Errors = errors?.ToList(),
+            HttpStatusCode = statusCode,
+            Timestamp = DateTime.UtcNow
+        };
+    }
 
     // Factory Method For Failure Response
     public static AuthenticationResponse Failure(string message, IEnumerable<string>? errors = null, HttpStatusCode statusCode = HttpStatusCode.BadRequest)

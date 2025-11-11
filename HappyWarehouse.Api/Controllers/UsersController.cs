@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using HappyWarehouse.Application.Common;
+using HappyWarehouse.Application.Features.UsersFeature.Commands.DeleteUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.LoginUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.UpdateUser;
 using HappyWarehouse.Application.Features.UsersFeature.DTOs;
@@ -37,5 +38,14 @@ namespace HappyWarehouse.Controllers
             var response = await _dispatcher.SendCommandAsync<UpdateUserCommand, AuthenticationResponse>(command);
             return NewResult(response);
         }
+        
+        [HttpDelete("soft-delete")]
+        public async Task<IActionResult> SoftDeleteUser([FromQuery] string email)
+        {
+            var command = new SoftDeleteUserCommand(email);
+            var response = await _dispatcher.SendCommandAsync<SoftDeleteUserCommand, AuthenticationResponse>(command);
+            return NewResult(response);
+        }
+
     }
 }

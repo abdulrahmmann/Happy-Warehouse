@@ -39,4 +39,10 @@ public class ApplicationUser: IdentityUser<int>
     {
         UpdatedAt = DateTime.UtcNow;
     }
+    
+    public void MarkUserAsDisabled()
+    {
+        IsActive = false;
+    }
+    
 }

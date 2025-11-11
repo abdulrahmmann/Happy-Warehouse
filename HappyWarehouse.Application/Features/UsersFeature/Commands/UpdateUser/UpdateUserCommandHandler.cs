@@ -74,6 +74,8 @@ public class UpdateUserCommandHandler: ICommandHandler<UpdateUserCommand, Authen
             user.RefreshToken = tokenResponse.RefreshToken;
             user.RefreshTokenExpiration = tokenResponse.RefreshTokenExpiration;
 
+            user.UpdatedAt = DateTime.UtcNow;
+            
             await _userManager.UpdateAsync(user);
 
             return tokenResponse;
