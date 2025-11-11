@@ -13,10 +13,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HappyWarehouse.Controllers
 {
+    [Authorize(Roles = "Admin,Management,Auditor")]
     [Route("api/v1/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    [AllowAnonymous]
     public class UsersController : AppControllerBase
     {
         private readonly Dispatcher _dispatcher;
@@ -26,6 +26,7 @@ namespace HappyWarehouse.Controllers
             _dispatcher = dispatcher;
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserDto userDto)
         {
