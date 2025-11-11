@@ -2,10 +2,30 @@
 
 namespace HappyWarehouse.Domain.IdentityEntities;
 
+/// <summary>
+/// Represents an application user with basic authentication and Info.
+/// </summary>
 public class ApplicationUser: IdentityUser<int>
 {
-    public string? RefreshToken { get; set; }
-    public DateTime? RefreshTokenExpiration { get; set; } 
+    /// <summary>
+    /// The fullName chosen by the user.
+    /// </summary>
+    public string FullName { get; set; } = string.Empty;
     
+    public bool IsActive { get; set; } = true;
+    
+    public string Role { get; set; } = string.Empty;
+    
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    
+    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+    
+    public DateTime? DeletedAt { get; set; } = DateTime.UtcNow;
     public bool IsDeleted { get; set; } = false;
+    
+    
+    // Refresh Token fields
+    public string? RefreshToken { get; set; }
+    
+    public DateTime? RefreshTokenExpiration { get; set; } 
 }
