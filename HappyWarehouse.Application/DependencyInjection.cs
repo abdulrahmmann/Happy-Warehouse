@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using HappyWarehouse.Application.Features.UsersFeature.DTOs;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GeneratePrincipalJwtToken;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateRefreshToken;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateToken;

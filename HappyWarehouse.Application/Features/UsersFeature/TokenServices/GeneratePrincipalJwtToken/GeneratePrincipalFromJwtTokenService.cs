@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using HappyWarehouse.Application.Features.UsersFeature.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -21,6 +22,8 @@ public class GeneratePrincipalFromJwtTokenService: IGeneratePrincipalFromJwtToke
     
     public ClaimsPrincipal GetPrincipalFromJwtToken(string? token)
     {
+        var jwtSettings = _configuration.GetSection("Jwt").Get<JwtSettings>()!;
+        
         var tokenValidation = new TokenValidationParameters()
         {
             ValidateAudience = true,
@@ -28,9 +31,9 @@ public class GeneratePrincipalFromJwtTokenService: IGeneratePrincipalFromJwtToke
             ValidateIssuerSigningKey = true,
             ValidateLifetime = false,
             
-            ValidAudience = _configuration["Jwt:Audience"],
-            ValidIssuer = _configuration["Jwt:Issuer"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SECRET_KEY"]!)),
+            ValidAudience = jwtSettings.Audience,
+            ValidIssuer = jwtSettings.Issuer,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SECRET_KEY)),
         };
         var tokenHandler = new JwtSecurityTokenHandler();
         

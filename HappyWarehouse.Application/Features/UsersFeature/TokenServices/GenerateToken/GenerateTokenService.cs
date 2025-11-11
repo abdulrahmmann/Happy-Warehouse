@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using HappyWarehouse.Application.Common;
+using HappyWarehouse.Application.Features.UsersFeature.Models;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateRefreshToken;
 using HappyWarehouse.Domain.IdentityEntities;
 using Microsoft.AspNetCore.Identity;
@@ -20,7 +21,8 @@ public class GenerateTokenService: IGenerateTokenService
     #endregion
 
     #region Inject Instances Into Constructor
-    public GenerateTokenService(IGenerateRefreshTokenService refreshTokenService, UserManager<ApplicationUser> userManager, IConfiguration configuration)
+    public GenerateTokenService(IGenerateRefreshTokenService refreshTokenService, UserManager<ApplicationUser> userManager, 
+        IConfiguration configuration, JwtSettings  jwtSettings)
     {
         _refreshTokenService = refreshTokenService;
         _userManager = userManager;
@@ -31,14 +33,17 @@ public class GenerateTokenService: IGenerateTokenService
     #region Generate Token Method.
     public AuthenticationResponse GenerateToken(ApplicationUser user)
     {
+        // Jwt Info from app-settings.json file
+        var jwtSettings = _configuration.GetSection("Jwt").Get<JwtSettings>()!;
+        
         // Token Expiration Minutes.
-        var expirationToken = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:EXPIRATION_MINUTES"]));
+        var expirationToken = DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtSettings.EXPIRATION_MINUTES));
         
         // Get user role.
         var userRole = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
         
         // Get Secret Key.
-        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SECRET_KEY"]!));
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SECRET_KEY));
         
         // Create Signing Credentials.
         var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
@@ -56,8 +61,8 @@ public class GenerateTokenService: IGenerateTokenService
         
         // Generate Token.
         var tokenGenerator = new JwtSecurityToken(
-            issuer: _configuration["Jwt:Issuer"],
-            audience: _configuration["Jwt:Audience"],
+            issuer: jwtSettings.Issuer,
+            audience: jwtSettings.Audience,
             claims: claims,
             expires: expirationToken,
             signingCredentials: signingCredentials
