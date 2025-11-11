@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Identity;
 
 namespace HappyWarehouse.Domain.IdentityEntities;
 
@@ -17,10 +18,9 @@ public class ApplicationUser: IdentityUser<int>
     public string Role { get; set; } = string.Empty;
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    
     public DateTime? UpdatedAt { get; set; }
-    
     public DateTime? DeletedAt { get; set; }
+    public DateTime? RestoredAt { get; set; }
     public bool IsDeleted { get; set; }
     
     
@@ -45,4 +45,10 @@ public class ApplicationUser: IdentityUser<int>
         IsActive = false;
     }
     
+    public void MarkUserAsRestored()
+    {
+        IsDeleted = false;
+        IsActive = true;
+        RestoredAt = DateTime.UtcNow;
+    }
 }

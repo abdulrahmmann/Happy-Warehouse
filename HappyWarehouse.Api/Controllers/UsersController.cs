@@ -3,6 +3,7 @@ using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.ChangePassword;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.DeleteUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.LoginUser;
+using HappyWarehouse.Application.Features.UsersFeature.Commands.RestoreUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.UpdateUser;
 using HappyWarehouse.Application.Features.UsersFeature.DTOs;
 using HappyWarehouse.Application.Features.UsersFeature.Queries.GetAllUsers;
@@ -55,6 +56,14 @@ namespace HappyWarehouse.Controllers
         {
             var command = new SoftDeleteUserCommand(email);
             var response = await _dispatcher.SendCommandAsync<SoftDeleteUserCommand, AuthenticationResponse>(command);
+            return NewResult(response);
+        }
+        
+        [HttpPut("restore-user")]
+        public async Task<IActionResult> ChangePassword([FromQuery] string email)
+        {
+            var command = new RestoreUserCommand(email);
+            var response = await _dispatcher.SendCommandAsync<RestoreUserCommand, AuthenticationResponse>(command);
             return NewResult(response);
         }
         

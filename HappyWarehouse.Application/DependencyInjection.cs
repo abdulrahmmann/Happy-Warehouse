@@ -3,6 +3,7 @@ using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.ChangePassword;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.DeleteUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.LoginUser;
+using HappyWarehouse.Application.Features.UsersFeature.Commands.RestoreUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.UpdateUser;
 using HappyWarehouse.Application.Features.UsersFeature.DTOs;
 using HappyWarehouse.Application.Features.UsersFeature.Queries.GetAllUsers;
@@ -34,6 +35,7 @@ public static class DependencyInjection
         services.AddTransient<ICommandHandler<LoginUserCommand, AuthenticationResponse>, LoginUserCommandHandler>();
         services.AddTransient<ICommandHandler<UpdateUserCommand, AuthenticationResponse>, UpdateUserCommandHandler>();
         services.AddTransient<ICommandHandler<SoftDeleteUserCommand, AuthenticationResponse>, SoftDeleteUserCommandHandler>();
+        services.AddTransient<ICommandHandler<RestoreUserCommand, AuthenticationResponse>, RestoreUserCommandHandler>();
         services.AddTransient<ICommandHandler<ChangePasswordCommand, AuthenticationResponse>, ChangePasswordCommandHandler>();
         
         // QUERIES
