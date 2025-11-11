@@ -8,7 +8,7 @@ public class ApplicationDbContextFactory: IDesignTimeDbContextFactory<Applicatio
     public ApplicationDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        optionsBuilder.UseSqlite("Data Source=app.db");
+        optionsBuilder.UseSqlite("Data Source=D:\\Kaizen-Plus\\HappyWarehouse.db");
 
         return new ApplicationDbContext(optionsBuilder.Options);
     }

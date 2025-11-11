@@ -2,7 +2,10 @@ using System.Security.Claims;
 using System.Text;
 using Asp.Versioning;
 using HappyWarehouse.Application;
+using HappyWarehouse.Application.Extensions;
 using HappyWarehouse.Application.Features.UsersFeature.Models;
+using HappyWarehouse.Application.Features.UsersFeature.SeedData;
+using HappyWarehouse.Domain;
 using HappyWarehouse.Infrastructure;
 using HappyWarehouse.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,8 +37,12 @@ builder.Services.AddAuthorization();
 
 // REGISTER LAYERS DEPENDENCIES
 builder.Services
+    .AddDomainDependencies(builder.Configuration)
     .AddInfrastructureDependencies(builder.Configuration)
     .AddApplicationDependencies(builder.Configuration);
+
+// Serilog
+builder.Host.SerilogConfiguration();
 
 // ADDING AUTHENTICATION
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
@@ -90,7 +98,15 @@ builder.Services.AddCors(options =>
     });
 });
 
+
+
 var app = builder.Build();
+
+// using (var scope = app.Services.CreateScope())
+// {
+//     var services = scope.ServiceProvider;
+//     await DbSeedApplicationUsers.SeedRolesAndUsersAsync(services);
+// }
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

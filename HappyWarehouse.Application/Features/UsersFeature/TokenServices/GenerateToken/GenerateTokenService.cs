@@ -22,7 +22,7 @@ public class GenerateTokenService: IGenerateTokenService
 
     #region Inject Instances Into Constructor
     public GenerateTokenService(IGenerateRefreshTokenService refreshTokenService, UserManager<ApplicationUser> userManager, 
-        IConfiguration configuration, JwtSettings  jwtSettings)
+        IConfiguration configuration)
     {
         _refreshTokenService = refreshTokenService;
         _userManager = userManager;
@@ -85,5 +85,4 @@ public class GenerateTokenService: IGenerateTokenService
             );
     }
     #endregion
-    
 }

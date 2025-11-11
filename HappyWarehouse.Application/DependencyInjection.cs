@@ -1,8 +1,11 @@
 ﻿using FluentValidation;
+using HappyWarehouse.Application.Common;
+using HappyWarehouse.Application.Features.UsersFeature.Commands.LoginUser;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GeneratePrincipalJwtToken;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateRefreshToken;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateToken;
 using HappyWarehouse.Application.Features.UsersFeature.Validations;
+using HappyWarehouse.Domain.CQRS;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,6 +24,8 @@ public static class DependencyInjection
         services.AddValidatorsFromAssemblyContaining<LoginUserValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateUserValidator>();
         
+        // Register CQRS Functionality: Request + handler
+        services.AddTransient<ICommandHandler<LoginUserCommand, AuthenticationResponse>, LoginUserCommandHandler>();
         
         return services;
     }
