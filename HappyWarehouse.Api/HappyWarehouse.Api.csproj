@@ -27,4 +27,10 @@
       <Folder Include="Controllers\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\HappyWarehouse.Application\HappyWarehouse.Application.csproj" />
+      <ProjectReference Include="..\HappyWarehouse.Domain\HappyWarehouse.Domain.csproj" />
+      <ProjectReference Include="..\HappyWarehouse.Infrastructure\HappyWarehouse.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>
