@@ -27,5 +27,16 @@ public class ApplicationUser: IdentityUser<int>
     // Refresh Token fields
     public string? RefreshToken { get; set; }
     
-    public DateTime? RefreshTokenExpiration { get; set; } 
+    public DateTime? RefreshTokenExpiration { get; set; }
+
+    public void MarkUserAsDeleted()
+    {
+        IsDeleted = true;
+        DeletedAt = DateTime.UtcNow;
+    }
+
+    public void MarkUserAsModified()
+    {
+        UpdatedAt = DateTime.UtcNow;
+    }
 }
