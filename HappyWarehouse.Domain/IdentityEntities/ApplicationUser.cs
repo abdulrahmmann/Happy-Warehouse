@@ -20,7 +20,7 @@ public class ApplicationUser: IdentityUser<int>
     
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
     
-    public DateTime? DeletedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? DeletedAt { get; set; }
     public bool IsDeleted { get; set; } = false;
     
     

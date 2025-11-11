@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HappyWarehouse.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251111163550_Initial")]
+    [Migration("20251111171443_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
