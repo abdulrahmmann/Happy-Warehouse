@@ -1,4 +1,5 @@
 ﻿namespace HappyWarehouse.Application.Features.UsersFeature.DTOs;
 
-public record GetUserDetailsDto(string Id, string UserName, string? Email, string? PhoneNumber, string Role,
-    string? RefreshToken, DateTime? RefreshTokenExpiration);
+public record UserDetailsDto(string Id, string? UserName, string? FullName, string? Email, string? PhoneNumber, 
+    string Role, bool IsDeleted, bool IsActive, 
+    DateTime CreatedAt, DateTime? UpdatedAt, DateTime? DeletedAt);

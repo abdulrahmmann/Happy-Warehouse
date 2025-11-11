@@ -5,6 +5,7 @@ using HappyWarehouse.Application.Features.UsersFeature.Commands.DeleteUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.LoginUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.UpdateUser;
 using HappyWarehouse.Application.Features.UsersFeature.DTOs;
+using HappyWarehouse.Application.Features.UsersFeature.Queries.GetAllUsers;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -56,6 +57,15 @@ namespace HappyWarehouse.Controllers
             var response = await _dispatcher.SendCommandAsync<SoftDeleteUserCommand, AuthenticationResponse>(command);
             return NewResult(response);
         }
+        
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var query = new GetAllUsersQuery();
+            var users = await _dispatcher.SendQueryAsync<GetAllUsersQuery, UserResponse<IEnumerable<UserDetailsDto>>>(query);
+            return NewResult(users);
+        }
+
 
     }
 }

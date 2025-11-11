@@ -92,7 +92,7 @@ namespace HappyWarehouse.Application.Features.UsersFeature.SeedData
                     Roles.Auditor
                 )
             };
-
+            
             foreach (var (user, password, role) in users)
             {
                 var existingUser = await userManager.FindByEmailAsync(user.Email);
