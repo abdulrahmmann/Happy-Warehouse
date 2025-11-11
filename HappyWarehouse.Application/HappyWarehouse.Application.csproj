@@ -15,4 +15,9 @@
       <PackageReference Include="StackExchange.Redis" Version="2.9.32" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\HappyWarehouse.Domain\HappyWarehouse.Domain.csproj" />
+      <ProjectReference Include="..\HappyWarehouse.Infrastructure\HappyWarehouse.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>
