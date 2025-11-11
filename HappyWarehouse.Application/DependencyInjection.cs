@@ -1,6 +1,9 @@
-﻿using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GeneratePrincipalJwtToken;
+﻿using FluentValidation;
+using HappyWarehouse.Application.Features.UsersFeature.DTOs;
+using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GeneratePrincipalJwtToken;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateRefreshToken;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateToken;
+using HappyWarehouse.Application.Features.UsersFeature.Validations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +17,11 @@ public static class DependencyInjection
         services.AddScoped<IGenerateRefreshTokenService, GenerateRefreshTokenService>();
         services.AddScoped<IGenerateTokenService, GenerateTokenService>();
         services.AddScoped<IGeneratePrincipalFromJwtTokenService, GeneratePrincipalFromJwtTokenService>();
+        
+        // Register FLUENT VALIDATION
+        services.AddValidatorsFromAssemblyContaining<LoginUserValidator>();
+        services.AddValidatorsFromAssemblyContaining<UpdateUserValidator>();
+        
         
         return services;
     }
