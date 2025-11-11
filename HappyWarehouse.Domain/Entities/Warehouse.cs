@@ -1,4 +1,5 @@
 ﻿using HappyWarehouse.Domain.Bases;
+using HappyWarehouse.Domain.IdentityEntities;
 
 namespace HappyWarehouse.Domain.Entities;
 
@@ -24,4 +25,10 @@ public class Warehouse: Entity<int>
     
     /// <summary> Navigation Property: Represent one warehouse can contain many items. </summary>
     public ICollection<WarehouseItem> WarehouseItems { get; set; } = [];
+    
+    /// <summary> Foreign Key: Represent the user who create the warehouse. </summary>
+    public int? CreatedByUserId { get; private set; }
+
+    /// <summary> Navigation Property: Represent the user who create the warehouse. </summary>
+    public ApplicationUser? CreatedByUser { get; private set; } = null!;
 }

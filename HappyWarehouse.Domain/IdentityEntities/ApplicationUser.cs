@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using HappyWarehouse.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace HappyWarehouse.Domain.IdentityEntities;
 
@@ -67,10 +68,15 @@ public class ApplicationUser: IdentityUser<int>
     /// </summary>
     public DateTime? RefreshTokenExpiration { get; set; }
     #endregion
+    
+    /// <summary> Navigation Property: One user can create many warehouses </summary>
+    public ICollection<Warehouse> Warehouses { get; set; } = new List<Warehouse>();
+
+    /// <summary> Navigation Property: One user can create many warehouse items. </summary>
+    public ICollection<WarehouseItem> CreatedItems { get; set; } = new List<WarehouseItem>();
 
     
     #region Helper Methods
-    
     /// <summary>
     ///  Marks the user account as soft-deleted and sets <see cref="DeletedAt"/> to the current UTC time.
     /// </summary>
