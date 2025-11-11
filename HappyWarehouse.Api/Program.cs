@@ -2,6 +2,7 @@ using System.Security.Claims;
 using System.Text;
 using Asp.Versioning;
 using HappyWarehouse.Application;
+using HappyWarehouse.Application.Features.UsersFeature.Models;
 using HappyWarehouse.Infrastructure;
 using HappyWarehouse.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,6 +37,8 @@ builder.Services
     .AddApplicationDependencies(builder.Configuration);
 
 // ADDING AUTHENTICATION
+var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -51,9 +54,9 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateIssuerSigningKey = true,
 
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SECRET_KEY"]!)),
+        ValidAudience = jwtSettings!.Audience,
+        ValidIssuer = jwtSettings!.Issuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SECRET_KEY)),
 
         RoleClaimType = ClaimTypes.Role,
         
