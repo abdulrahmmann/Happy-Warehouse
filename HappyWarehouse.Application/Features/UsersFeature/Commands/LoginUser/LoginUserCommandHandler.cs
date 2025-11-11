@@ -64,6 +64,12 @@ public class LoginUserCommandHandler: ICommandHandler<LoginUserCommand, Authenti
                 return AuthenticationResponse.Failure("Account is locked. Try again later.");
             }
             
+            if (!user.IsActive)
+            {
+                _logger.Warning("Your account is disabled, please contact support.");
+                return AuthenticationResponse.Failure("Your account is disabled, please contact support.");
+            }
+            
             // check password
             var result = await _signInManager.CheckPasswordSignInAsync(user, userRequest.Password!, lockoutOnFailure:true);
             

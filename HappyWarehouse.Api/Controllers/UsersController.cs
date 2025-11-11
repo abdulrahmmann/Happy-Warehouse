@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HappyWarehouse.Controllers
 {
-    [Authorize(Roles = "Admin,Management,Auditor")]
+    [Authorize]
     [Route("api/v1/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
@@ -35,6 +35,8 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         
+        
+        [Authorize(Roles = "Admin")]
         [HttpPut("update")]
         public async Task<IActionResult> UpdateUser([FromQuery] string email, [FromBody] UpdateUserDto userDto)
         {
@@ -43,6 +45,7 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpPut("change-password")]
         public async Task<IActionResult> ChangePassword([FromQuery] string email, [FromBody] ChangePasswordDto passwordDto)
         {
@@ -50,8 +53,8 @@ namespace HappyWarehouse.Controllers
             var response = await _dispatcher.SendCommandAsync<ChangePasswordCommand, AuthenticationResponse>(command);
             return NewResult(response);
         }
-
         
+        [Authorize(Roles = "Admin")]
         [HttpDelete("soft-delete")]
         public async Task<IActionResult> SoftDeleteUser([FromQuery] string email)
         {
@@ -60,6 +63,7 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpPut("restore-user")]
         public async Task<IActionResult> ChangePassword([FromQuery] string email)
         {
@@ -68,6 +72,7 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         
+        [Authorize(Roles = "Admin,Auditor")]
         [HttpGet("all")]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -75,7 +80,5 @@ namespace HappyWarehouse.Controllers
             var users = await _dispatcher.SendQueryAsync<GetAllUsersQuery, UserResponse<IEnumerable<UserDetailsDto>>>(query);
             return NewResult(users);
         }
-
-
     }
 }

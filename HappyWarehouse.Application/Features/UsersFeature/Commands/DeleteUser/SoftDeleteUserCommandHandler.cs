@@ -37,6 +37,13 @@ public class SoftDeleteUserCommandHandler: ICommandHandler<SoftDeleteUserCommand
             if (user == null)
                 return AuthenticationResponse.Failure("User not found.");
             
+            var role = await _userManager.GetRolesAsync(user);
+            if (role.Contains("Admin"))
+            {
+                _logger.Warning("Admin cannot be deleted.");
+                return AuthenticationResponse.Failure("Admin cannot be deleted.");
+            }
+            
             user.IsDeleted = true;
             user.DeletedAt = DateTime.UtcNow;
             user.IsActive = false; 
