@@ -34,7 +34,7 @@ public class ApplicationUser: IdentityUser<int>
         IsDeleted = true;
         DeletedAt = DateTime.UtcNow;
     }
-
+    
     public void MarkUserAsModified()
     {
         UpdatedAt = DateTime.UtcNow;

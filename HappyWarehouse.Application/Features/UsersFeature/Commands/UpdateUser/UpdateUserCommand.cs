@@ -1,3 +1,7 @@
-﻿namespace HappyWarehouse.Application.Features.UsersFeature.Commands.UpdateUser;
+﻿using HappyWarehouse.Application.Common;
+using HappyWarehouse.Application.Features.UsersFeature.DTOs;
+using HappyWarehouse.Domain.CQRS;
 
-public record UpdateUserCommand(string Username, string FullName, string Email );
+namespace HappyWarehouse.Application.Features.UsersFeature.Commands.UpdateUser;
+
+public record UpdateUserCommand(string Email, UpdateUserDto? UserDto): ICommand<AuthenticationResponse>;

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.LoginUser;
+using HappyWarehouse.Application.Features.UsersFeature.Commands.UpdateUser;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GeneratePrincipalJwtToken;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateRefreshToken;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateToken;
@@ -26,6 +27,7 @@ public static class DependencyInjection
         
         // Register CQRS Functionality: Request + handler
         services.AddTransient<ICommandHandler<LoginUserCommand, AuthenticationResponse>, LoginUserCommandHandler>();
+        services.AddTransient<ICommandHandler<UpdateUserCommand, AuthenticationResponse>, UpdateUserCommandHandler>();
         
         return services;
     }

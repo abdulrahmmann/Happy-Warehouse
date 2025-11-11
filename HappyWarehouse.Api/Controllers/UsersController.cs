@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.LoginUser;
+using HappyWarehouse.Application.Features.UsersFeature.Commands.UpdateUser;
 using HappyWarehouse.Application.Features.UsersFeature.DTOs;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.AspNetCore.Authorization;
@@ -26,6 +27,14 @@ namespace HappyWarehouse.Controllers
         {
             var command = new LoginUserCommand(userDto);
             var response = await _dispatcher.SendCommandAsync<LoginUserCommand, AuthenticationResponse>(command);
+            return NewResult(response);
+        }
+        
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateUser([FromQuery] string email, [FromBody] UpdateUserDto userDto)
+        {
+            var command = new UpdateUserCommand(email, userDto);
+            var response = await _dispatcher.SendCommandAsync<UpdateUserCommand, AuthenticationResponse>(command);
             return NewResult(response);
         }
     }
