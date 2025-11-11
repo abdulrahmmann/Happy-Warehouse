@@ -26,7 +26,7 @@ public class Country: Entity<int>
     
     #region Create Country.
     /// <summary> Method to Create Country. </summary>
-    public Country Create(string countryName, string? createdBy = null)
+    public static Country Create(string countryName, string? createdBy = null)
     {
         if (string.IsNullOrWhiteSpace(countryName))
         {
@@ -35,7 +35,7 @@ public class Country: Entity<int>
         
         var country = new Country(countryName);
 
-        MarkCreated(createdBy);
+        country.MarkCreated(createdBy);
         
         return country;
     }

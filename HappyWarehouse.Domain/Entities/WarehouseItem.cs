@@ -50,4 +50,46 @@ public class WarehouseItem: Entity<int>
 
     /// <summary> Navigation Property: Represent the user who create the warehouse. </summary>
     public ApplicationUser? CreatedByUser { get; private set; } = null!;
+    
+    private WarehouseItem() {}
+    public WarehouseItem(string itemName, string? skuCode, int qty, decimal costPrice, decimal? msrpPrice, int warehouseId, int? createdByUserId)
+    {
+        ItemName = itemName;
+        SkuCode = skuCode;
+        Qty = qty;
+        CostPrice = costPrice;
+        MsrpPrice = msrpPrice;
+        WarehouseId = warehouseId;
+        CreatedByUserId = createdByUserId;
+    }
+
+    #region Update WarehouseItem.
+    /// <summary> Method to Update WarehouseItem. </summary>
+    public void Update(string itemName, int qty, decimal costPrice, decimal? msrpPrice = null, string? skuCode = null, string? modifiedBy = null)
+    {
+        if (!string.IsNullOrWhiteSpace(itemName)) ItemName = itemName;
+        if (!string.IsNullOrWhiteSpace(skuCode))  SkuCode = skuCode;
+        if (qty >= 1) Qty = qty;
+        CostPrice = costPrice;
+        MsrpPrice = msrpPrice;
+
+        MarkModified(modifiedBy);
+    }
+    #endregion
+    
+    #region Softly Delete WarehouseItem.
+    /// <summary> Method to Softly Delete WarehouseItem. </summary>
+    public void SoftDelete(string? deletedBy = null)
+    {
+        MarkDeleted(deletedBy);
+    }
+    #endregion
+
+    #region Restore Deleted WarehouseItem.
+    /// <summary> Method to Restore Deleted WarehouseItem. </summary>
+    public void Restore(string? restoredBy = null)
+    {
+        MarkRestored(restoredBy);
+    }
+    #endregion
 }
