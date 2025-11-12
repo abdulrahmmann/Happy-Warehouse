@@ -19,7 +19,7 @@ public class CreateCountryCommandHandler(IUnitOfWork unitOfWork, ILogger logger)
         
         try
         {
-            var existingCountry = await unitOfWork.GetCountryRepository.FindAsync(c => c.Name == request.Name);
+            var existingCountry = await unitOfWork.GetCountryRepository.FirstOrDefaultAsync(c => c.Name == request.Name, cancellationToken);
 
             if (existingCountry is not null)
             {

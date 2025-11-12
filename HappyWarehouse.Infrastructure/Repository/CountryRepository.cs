@@ -48,8 +48,8 @@ public class CountryRepository: GenericRepository<Country>, ICountryRepository
         existingCountry.Restore(restoredBy);
     }
 
-    public async Task<Country> FindAsync(Expression<Func<Country, bool>> predicate)
+    public async Task<Country> FirstOrDefaultAsync(Expression<Func<Country, bool>> predicate, CancellationToken cancellationToken)
     {
-        return (await _dbContext.Countries.FirstOrDefaultAsync(predicate))!;
+        return (await _dbContext.Countries.FirstOrDefaultAsync(predicate, cancellationToken))!;
     }
 }

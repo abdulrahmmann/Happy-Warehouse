@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.CountryFeature.Commands.CreateCountry;
+using HappyWarehouse.Application.Features.CountryFeature.Commands.UpdateCountry;
 using HappyWarehouse.Application.Features.CountryFeature.DTOs;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.AspNetCore.Authorization;
@@ -14,6 +15,7 @@ namespace HappyWarehouse.Controllers
     [ApiVersion("1.0")]
     public class CountryController(Dispatcher dispatcher) : AppControllerBase
     {
+        [Authorize(Roles = "Admin")]
         [HttpPost("create-country")]
         public async Task<IActionResult> CreateCountry([FromBody] CreateCountryDto countryDto)
         {
@@ -21,5 +23,15 @@ namespace HappyWarehouse.Controllers
             var response = await dispatcher.SendCommandAsync<CreateCountryCommand, BaseResponse<string>>(command);
             return NewResult(response);
         }
+        
+        [Authorize(Roles = "Admin")]
+        [HttpPost("update-country")]
+        public async Task<IActionResult> UpdateCountry(int id, [FromBody] UpdateCountryDto countryDto)
+        {
+            var command = new UpdateCountryCommand(id, countryDto);
+            var response = await dispatcher.SendCommandAsync<UpdateCountryCommand, BaseResponse<string>>(command);
+            return NewResult(response);
+        }
+        
     }
 }

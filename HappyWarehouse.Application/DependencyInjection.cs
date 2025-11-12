@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.CountryFeature.Commands.CreateCountry;
+using HappyWarehouse.Application.Features.CountryFeature.Commands.UpdateCountry;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.ChangePassword;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.DeleteUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.LoginUser;
@@ -44,6 +45,7 @@ public static class DependencyInjection
         
         // COUNTRIES COMMANDS
         services.AddTransient<ICommandHandler<CreateCountryCommand, BaseResponse<string>>, CreateCountryCommandHandler>();
+        services.AddTransient<ICommandHandler<UpdateCountryCommand, BaseResponse<string>>, UpdateCountryCommandHandler>();
         
         
         return services;

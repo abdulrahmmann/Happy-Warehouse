@@ -1,3 +1,3 @@
 ﻿namespace HappyWarehouse.Application.Features.CountryFeature.DTOs;
 
-public record UpdateCountryDto(string Name);
+public record UpdateCountryDto(string Name, string? UpdatedBy);

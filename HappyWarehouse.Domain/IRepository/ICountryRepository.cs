@@ -14,5 +14,5 @@ public interface ICountryRepository: IGenericRepository<Country>
     /// <summary> Method to Restore Country. </summary>
     Task RestoreAsync(int id, string? restoredBy = null);
 
-    public Task<Country> FindAsync(Expression<Func<Country, bool>> predicate);
+    public Task<Country> FirstOrDefaultAsync(Expression<Func<Country, bool>> predicate, CancellationToken cancellationToken);
 }
