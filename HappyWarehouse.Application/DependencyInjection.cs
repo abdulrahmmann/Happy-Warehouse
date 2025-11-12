@@ -3,6 +3,8 @@ using HappyWarehouse.Application.Caching;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.CountryFeature.Commands.CreateCountry;
 using HappyWarehouse.Application.Features.CountryFeature.Commands.UpdateCountry;
+using HappyWarehouse.Application.Features.CountryFeature.DTOs;
+using HappyWarehouse.Application.Features.CountryFeature.Queries.GetAll;
 using HappyWarehouse.Application.Features.DashboardFeature.DTOs;
 using HappyWarehouse.Application.Features.DashboardFeature.Queries.GetWarehouseStatus;
 using HappyWarehouse.Application.Features.DashboardFeature.Queries.WarehouseTopItems;
@@ -58,6 +60,9 @@ public static class DependencyInjection
         services.AddValidatorsFromAssemblyContaining<CreateWarehouseItemValidator>();
         
         // Register CQRS Functionality: Request + handler
+        // COUNTRIES QUERIES
+        services.AddTransient<IQueryHandler<GetAllCountriesQuery, BaseResponse<IEnumerable<CountryDto>>>, GetAllCountriesQueryHandler>();
+        
         // USERS COMMANDS
         services.AddTransient<ICommandHandler<LoginUserCommand, AuthenticationResponse>, LoginUserCommandHandler>();
         services.AddTransient<ICommandHandler<UpdateUserCommand, AuthenticationResponse>, UpdateUserCommandHandler>();
