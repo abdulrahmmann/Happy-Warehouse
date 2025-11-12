@@ -1,8 +1,8 @@
 ﻿using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.WarehouseFeature.DTOs;
 using HappyWarehouse.Domain.CQRS;
-using HappyWarehouse.Domain.Entities;
 using HappyWarehouse.Infrastructure.UOF;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehouses;
@@ -13,8 +13,14 @@ public class GetWarehousesQueryHandler(IUnitOfWork unitOfWork, ILogger logger): 
     {
         try
         {
-            var warehouses = await unitOfWork.GetRepository<Warehouse>().GetAllAsync();
+            var warehouses = unitOfWork.GetWarehouseRepository.GetAllQueryable();
 
+            var pagedWarehouses = await warehouses
+                .OrderBy(w => w.Id)
+                .Skip((query.PageNumber - 1) * query.PageSize)
+                .Take(query.PageSize)
+                .ToListAsync(cancellationToken);
+            
             var enumerable = warehouses.ToList();
             
             if (enumerable.Count == 0)

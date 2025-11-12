@@ -4,4 +4,4 @@ using HappyWarehouse.Domain.CQRS;
 
 namespace HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehouses;
 
-public record GetWarehousesQuery(): IQuery<BaseResponse<IEnumerable<WarehouseDto>>>;
+public record GetWarehousesQuery(int PageNumber = 1, int PageSize = 10): IQuery<BaseResponse<IEnumerable<WarehouseDto>>>;

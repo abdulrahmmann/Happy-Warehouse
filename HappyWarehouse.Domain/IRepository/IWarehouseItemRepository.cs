@@ -17,7 +17,7 @@ public interface IWarehouseItemRepository: IGenericRepository<WarehouseItem>
     /// <summary> Method to Add Item to Warehouse Item. </summary>
     Task RestoreAsync(int id, string? restoredBy = null);
 
-    public Task<IEnumerable<WarehouseItem>> GetAllItemsByWarehouseIdAsync(int warehouseId, CancellationToken cancellationToken);
+    public IQueryable<WarehouseItem> GetAllItemsByWarehouseIdAsync(int warehouseId, CancellationToken cancellationToken);
     
     public Task<WarehouseItem> FirstOrDefaultAsync(Expression<Func<WarehouseItem, bool>> predicate, CancellationToken cancellationToken);
     public Task<WarehouseItem> FirstOrDefaultAsyncWithIgnoreQueryFilter(Expression<Func<WarehouseItem, bool>> predicate, CancellationToken cancellationToken);

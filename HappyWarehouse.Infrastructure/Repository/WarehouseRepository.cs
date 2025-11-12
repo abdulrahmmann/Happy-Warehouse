@@ -78,6 +78,11 @@ public class WarehouseRepository: GenericRepository<Warehouse>, IWarehouseReposi
             .ToListAsync(cancellationToken);
     }
 
+    public IQueryable<Warehouse> GetAllQueryable()
+    {
+        return _dbContext.Warehouses.IgnoreQueryFilters().AsNoTracking();
+    }
+
     public async Task<Warehouse> FirstOrDefaultAsync(Expression<Func<Warehouse, bool>> predicate, CancellationToken cancellationToken)
     {
         return (await _dbContext.Warehouses.FirstOrDefaultAsync(predicate, cancellationToken))!;
