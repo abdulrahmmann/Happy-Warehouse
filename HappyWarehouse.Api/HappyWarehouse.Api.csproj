@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>HappyWarehouse</RootNamespace>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -32,6 +33,12 @@
       <ProjectReference Include="..\HappyWarehouse.Application\HappyWarehouse.Application.csproj" />
       <ProjectReference Include="..\HappyWarehouse.Domain\HappyWarehouse.Domain.csproj" />
       <ProjectReference Include="..\HappyWarehouse.Infrastructure\HappyWarehouse.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

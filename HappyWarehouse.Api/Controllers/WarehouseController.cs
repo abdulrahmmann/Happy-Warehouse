@@ -21,6 +21,47 @@ namespace HappyWarehouse.Controllers
     [ApiVersion("1.0")]
     public class WarehouseController(Dispatcher dispatcher, IRedisCacheService cacheService) : AppControllerBase
     {
+        #region GET Endpoints
+        [AllowAnonymous]
+        [HttpGet("warehouses")]
+        public async Task<IActionResult> GetWarehouses()
+        {
+            var cachedWarehouses = cacheService.GetData<BaseResponse<IEnumerable<WarehouseDto>>>("all-warehouses");
+
+            if (cachedWarehouses is not null)
+            {
+                return NewResult(cachedWarehouses);
+            }
+            
+            var command = new GetWarehousesQuery();
+            var response = await dispatcher.SendQueryAsync<GetWarehousesQuery, BaseResponse<IEnumerable<WarehouseDto>>>(command);
+            
+            cacheService.SetData("all-warehouses", response);
+            
+            return NewResult(response);
+        }
+        
+        [AllowAnonymous]
+        [HttpGet("warehouses-with-items")]
+        public async Task<IActionResult> GetWarehousesWithItems()
+        {
+            var cachedWarehouses = cacheService.GetData<BaseResponse<IEnumerable<WarehousesWithItemsDto>>>("all-warehouses-with-items");
+            
+            if (cachedWarehouses is not null)
+            {
+                return NewResult(cachedWarehouses);
+            }
+            
+            var query = new GetWarehousesWithItemsQuery();
+            var response = await dispatcher.SendQueryAsync<GetWarehousesWithItemsQuery, BaseResponse<IEnumerable<WarehousesWithItemsDto>>>(query);
+            
+            cacheService.SetData("all-warehouses-with-items", response);
+            
+            return NewResult(response);
+        }
+        #endregion
+
+        #region POST Endpoints
         [AllowAnonymous]
         [HttpPost("create-warehouse")]
         public async Task<IActionResult> CreateWarehouse([FromBody] CreateWarehouseDto warehouseDto)
@@ -38,10 +79,12 @@ namespace HappyWarehouse.Controllers
             var response = await dispatcher.SendCommandAsync<CreateWarehouseListCommand, BaseResponse<string>>(command);
             return NewResult(response);
         } 
-        
+        #endregion
+
+        #region PUT Endpoints
         [AllowAnonymous]
-        [HttpPut("update-warehouse")]
-        public async Task<IActionResult> UpdateWarehouse(int id, [FromBody] UpdateWarehouseDto warehouseDto)
+        [HttpPut("update-warehouse/id={id}")]
+        public async Task<IActionResult> UpdateWarehouse([FromQuery] int id, [FromBody] UpdateWarehouseDto warehouseDto)
         {
             var command = new UpdateWarehouseCommand(id, warehouseDto);
             var response = await dispatcher.SendCommandAsync<UpdateWarehouseCommand, BaseResponse<string>>(command);
@@ -49,40 +92,24 @@ namespace HappyWarehouse.Controllers
         } 
         
         [AllowAnonymous]
-        [HttpDelete("delete-warehouse")]
-        public async Task<IActionResult> DeleteWarehouse(int id)
-        {
-            var command = new SoftDeleteWarehouseCommand(id);
-            var response = await dispatcher.SendCommandAsync<SoftDeleteWarehouseCommand, BaseResponse<string>>(command);
-            return NewResult(response);
-        }
-        
-        [AllowAnonymous]
-        [HttpPut("restore-warehouse")]
-        public async Task<IActionResult> RestoreWarehouse(int id, string? restoreBy)
+        [HttpPut("restore-warehouse/id={id}")]
+        public async Task<IActionResult> RestoreWarehouse([FromQuery] int id, string? restoreBy)
         {
             var command = new RestoreWarehouseCommand(id, restoreBy);
             var response = await dispatcher.SendCommandAsync<RestoreWarehouseCommand, BaseResponse<string>>(command);
             return NewResult(response);
         }
+        #endregion
         
+        #region DELETE Endpoints
         [AllowAnonymous]
-        [HttpGet("all")]
-        public async Task<IActionResult> GetWarehouses()
+        [HttpDelete("delete-warehouse/id={id}")]
+        public async Task<IActionResult> DeleteWarehouse([FromQuery] int id)
         {
-            var command = new GetWarehousesQuery();
-            var response = await dispatcher.SendQueryAsync<GetWarehousesQuery, BaseResponse<IEnumerable<WarehouseDto>>>(command);
+            var command = new SoftDeleteWarehouseCommand(id);
+            var response = await dispatcher.SendCommandAsync<SoftDeleteWarehouseCommand, BaseResponse<string>>(command);
             return NewResult(response);
         }
-        
-        [AllowAnonymous]
-        [HttpGet("warehouses-with-items")]
-        public async Task<IActionResult> GetWarehousesWithItems()
-        {
-            var query = new GetWarehousesWithItemsQuery();
-            var response = await dispatcher.SendQueryAsync<GetWarehousesWithItemsQuery, BaseResponse<IEnumerable<WarehousesWithItemsDto>>>(query);
-            return NewResult(response);
-        }
-
+        #endregion
     }
 }
