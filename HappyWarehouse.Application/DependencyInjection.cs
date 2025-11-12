@@ -15,6 +15,7 @@ using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateTok
 using HappyWarehouse.Application.Features.UsersFeature.Validations;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.CreateWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.DeleteWarehouse;
+using HappyWarehouse.Application.Features.WarehouseFeature.Commands.RestoreWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.UpdateWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.Validations;
 using HappyWarehouse.Domain.CQRS;
@@ -58,6 +59,7 @@ public static class DependencyInjection
         services.AddTransient<ICommandHandler<CreateWarehouseCommand, BaseResponse<string>>, CreateWarehouseCommandHandler>();
         services.AddTransient<ICommandHandler<UpdateWarehouseCommand, BaseResponse<string>>, UpdateWarehouseCommandHandler>();
         services.AddTransient<ICommandHandler<SoftDeleteWarehouseCommand, BaseResponse<string>>, SoftDeleteWarehouseCommandHandler>();
+        services.AddTransient<ICommandHandler<RestoreWarehouseCommand, BaseResponse<string>>, RestoreWarehouseCommandHandler>();
         
         
         return services;

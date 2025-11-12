@@ -18,4 +18,5 @@ public interface IWarehouseRepository: IGenericRepository<Warehouse>
     Task<WarehouseItem> AddItemAsync(int warehouseId, string itemName, string? skuCode, int qty, decimal costPrice, decimal? msrpPrice, int? createdByUserId, string? createdByUser);
     
     public Task<Warehouse> FirstOrDefaultAsync(Expression<Func<Warehouse, bool>> predicate, CancellationToken cancellationToken);
+    public Task<Warehouse> FirstOrDefaultAsyncWithIgnoreQueryFilter(Expression<Func<Warehouse, bool>> predicate, CancellationToken cancellationToken);
 }

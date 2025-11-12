@@ -73,4 +73,9 @@ public class WarehouseRepository: GenericRepository<Warehouse>, IWarehouseReposi
     {
         return (await _dbContext.Warehouses.FirstOrDefaultAsync(predicate, cancellationToken))!;
     }
+
+    public async Task<Warehouse> FirstOrDefaultAsyncWithIgnoreQueryFilter(Expression<Func<Warehouse, bool>> predicate, CancellationToken cancellationToken)
+    {
+        return (await _dbContext.Warehouses.IgnoreQueryFilters().FirstOrDefaultAsync(predicate, cancellationToken))!;
+    }
 }
