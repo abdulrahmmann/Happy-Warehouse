@@ -67,12 +67,12 @@ public class Warehouse: Entity<int>
 
     #region Update Warehouse.
     /// <summary> Method to Update Warehouse. </summary>
-    public void Update(string name, string address, string city, int countryId, string? modifiedBy = null)
+    public void Update(string? name, string? address, string? city, int? countryId, string? modifiedBy = null)
     {
         if (!string.IsNullOrWhiteSpace(name)) Name = name;
         if (!string.IsNullOrWhiteSpace(address)) Address = address;
         if (!string.IsNullOrWhiteSpace(city)) City = city;
-        CountryId = countryId;
+        if (countryId.HasValue) CountryId = countryId.Value;
 
         MarkModified(modifiedBy);
     }

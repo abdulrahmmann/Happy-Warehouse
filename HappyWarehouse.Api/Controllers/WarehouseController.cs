@@ -17,7 +17,7 @@ namespace HappyWarehouse.Controllers
     {
         [AllowAnonymous]
         [HttpPost("create-warehouse")]
-        public async Task<IActionResult> CreateCountry([FromBody] CreateWarehouseDto warehouseDto)
+        public async Task<IActionResult> CreateWarehouse([FromBody] CreateWarehouseDto warehouseDto)
         {
             var command = new CreateWarehouseCommand(warehouseDto);
             var response = await dispatcher.SendCommandAsync<CreateWarehouseCommand, BaseResponse<string>>(command);
@@ -25,8 +25,8 @@ namespace HappyWarehouse.Controllers
         } 
         
         [AllowAnonymous]
-        [HttpPost("update-warehouse")]
-        public async Task<IActionResult> UpdateCountry(int id, [FromBody] UpdateWarehouseDto warehouseDto)
+        [HttpPut("update-warehouse")]
+        public async Task<IActionResult> UpdateWarehouse(int id, [FromBody] UpdateWarehouseDto warehouseDto)
         {
             var command = new UpdateWarehouseCommand(id, warehouseDto);
             var response = await dispatcher.SendCommandAsync<UpdateWarehouseCommand, BaseResponse<string>>(command);
