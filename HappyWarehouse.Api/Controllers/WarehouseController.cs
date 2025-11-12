@@ -2,6 +2,7 @@ using Asp.Versioning;
 using HappyWarehouse.Application.Caching;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.CreateWarehouse;
+using HappyWarehouse.Application.Features.WarehouseFeature.Commands.CreateWarehouseList;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.DeleteWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.RestoreWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.UpdateWarehouse;
@@ -26,6 +27,15 @@ namespace HappyWarehouse.Controllers
         {
             var command = new CreateWarehouseCommand(warehouseDto);
             var response = await dispatcher.SendCommandAsync<CreateWarehouseCommand, BaseResponse<string>>(command);
+            return NewResult(response);
+        } 
+        
+        [AllowAnonymous]
+        [HttpPost("create-warehouse-list")]
+        public async Task<IActionResult> CreateWarehousesList([FromBody] IEnumerable<CreateWarehouseDto> warehousesDto)
+        {
+            var command = new CreateWarehouseListCommand(warehousesDto);
+            var response = await dispatcher.SendCommandAsync<CreateWarehouseListCommand, BaseResponse<string>>(command);
             return NewResult(response);
         } 
         
@@ -60,19 +70,8 @@ namespace HappyWarehouse.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetWarehouses()
         {
-            const string key = "all-warehouses";
-            var cachedWarehouses = cacheService.GetData<BaseResponse<IEnumerable<WarehouseDto>>>(key);
-            
-            if (cachedWarehouses is not null)
-            {
-                return NewResult(cachedWarehouses);
-            }
-            
             var command = new GetWarehousesQuery();
             var response = await dispatcher.SendQueryAsync<GetWarehousesQuery, BaseResponse<IEnumerable<WarehouseDto>>>(command);
-            
-            cacheService.SetData(key, response);
-            
             return NewResult(response);
         }
         

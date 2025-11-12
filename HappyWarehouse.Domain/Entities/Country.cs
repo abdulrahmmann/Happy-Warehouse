@@ -24,6 +24,19 @@ public class Country: Entity<int>
         Name = name;
     }
     
+    public Country(string name, string createdBy)
+    {
+        Name = name;
+        CreatedBy = createdBy;
+    }
+    
+    public Country(int id, string name, string createdBy)
+    {
+        Id = id;
+        Name = name;
+        CreatedBy = createdBy;
+    }
+    
     #region Create Country.
     /// <summary> Method to Create Country. </summary>
     public static Country Create(string countryName, string? createdBy = null)

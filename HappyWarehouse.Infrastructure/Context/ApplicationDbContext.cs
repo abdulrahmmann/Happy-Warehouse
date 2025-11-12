@@ -25,4 +25,5 @@ public class ApplicationDbContext: IdentityDbContext<ApplicationUser, Applicatio
         
         builder.Entity<ApplicationUser>().HasQueryFilter(u => !u.IsDeleted);
     }
+    
 }

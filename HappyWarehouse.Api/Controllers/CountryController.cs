@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.CountryFeature.Commands.CreateCountry;
+using HappyWarehouse.Application.Features.CountryFeature.Commands.CreateList;
 using HappyWarehouse.Application.Features.CountryFeature.Commands.UpdateCountry;
 using HappyWarehouse.Application.Features.CountryFeature.DTOs;
 using HappyWarehouse.Application.Features.CountryFeature.Queries.GetAll;
@@ -22,6 +23,15 @@ namespace HappyWarehouse.Controllers
         {
             var command = new CreateCountryCommand(countryDto);
             var response = await dispatcher.SendCommandAsync<CreateCountryCommand, BaseResponse<string>>(command);
+            return NewResult(response);
+        }
+        
+        [AllowAnonymous]
+        [HttpPost("create-country-list")]
+        public async Task<IActionResult> CreateCountryList([FromBody] IEnumerable<CreateCountryDto> countriesDto)
+        {
+            var command = new CreateCountryListCommand(countriesDto);
+            var response = await dispatcher.SendCommandAsync<CreateCountryListCommand, BaseResponse<string>>(command);
             return NewResult(response);
         }
         

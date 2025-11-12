@@ -2,6 +2,7 @@ using Asp.Versioning;
 using HappyWarehouse.Application.Caching;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.WarehouseItemFeature.Commands.CreateWarehouseItem;
+using HappyWarehouse.Application.Features.WarehouseItemFeature.Commands.CreateWarehouseItemList;
 using HappyWarehouse.Application.Features.WarehouseItemFeature.DTOs;
 using HappyWarehouse.Application.Features.WarehouseItemFeature.Queries.GetItemByWarehouseId;
 using HappyWarehouse.Domain.CQRS;
@@ -16,7 +17,7 @@ namespace HappyWarehouse.Controllers
     [ApiVersion("1.0")]
     public class WarehouseItemsController(Dispatcher dispatcher, IRedisCacheService cacheService) : AppControllerBase
     {
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         [HttpPost("create-item")]
         public async Task<IActionResult> CreateItem([FromBody] CreateWarehouseItemDto itemDto)
         {
@@ -25,8 +26,17 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         
-        [Authorize(Roles = "Admin")]
-        [HttpPost("get-items/{warehouseId}")]
+        [AllowAnonymous]
+        [HttpPost("create-item-list")]
+        public async Task<IActionResult> CreateItemsList([FromBody] IEnumerable<CreateWarehouseItemDto> itemsDto)
+        {
+            var command = new CreateWarehouseItemListCommand(itemsDto);
+            var response = await dispatcher.SendCommandAsync<CreateWarehouseItemListCommand, BaseResponse<string>>(command);
+            return NewResult(response);
+        }
+        
+        [AllowAnonymous]
+        [HttpGet("get-items/{warehouseId}")]
         public async Task<IActionResult> GetItemsByWarehouseId([FromQuery] int warehouseId)
         {
             var command = new GetItemsByWarehouseIdQuery(warehouseId);

@@ -2,6 +2,7 @@
 using HappyWarehouse.Application.Caching;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.CountryFeature.Commands.CreateCountry;
+using HappyWarehouse.Application.Features.CountryFeature.Commands.CreateList;
 using HappyWarehouse.Application.Features.CountryFeature.Commands.UpdateCountry;
 using HappyWarehouse.Application.Features.CountryFeature.DTOs;
 using HappyWarehouse.Application.Features.CountryFeature.Queries.GetAll;
@@ -21,6 +22,7 @@ using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateRef
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateToken;
 using HappyWarehouse.Application.Features.UsersFeature.Validations;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.CreateWarehouse;
+using HappyWarehouse.Application.Features.WarehouseFeature.Commands.CreateWarehouseList;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.DeleteWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.RestoreWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.UpdateWarehouse;
@@ -29,6 +31,7 @@ using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehouses
 using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehousesWithItems;
 using HappyWarehouse.Application.Features.WarehouseFeature.Validations;
 using HappyWarehouse.Application.Features.WarehouseItemFeature.Commands.CreateWarehouseItem;
+using HappyWarehouse.Application.Features.WarehouseItemFeature.Commands.CreateWarehouseItemList;
 using HappyWarehouse.Application.Features.WarehouseItemFeature.DTOs;
 using HappyWarehouse.Application.Features.WarehouseItemFeature.Queries.GetItemByWarehouseId;
 using HappyWarehouse.Application.Features.WarehouseItemFeature.Validators;
@@ -62,6 +65,8 @@ public static class DependencyInjection
         // Register CQRS Functionality: Request + handler
         // COUNTRIES QUERIES
         services.AddTransient<IQueryHandler<GetAllCountriesQuery, BaseResponse<IEnumerable<CountryDto>>>, GetAllCountriesQueryHandler>();
+        services.AddTransient<ICommandHandler<CreateCountryListCommand, BaseResponse<string>>, CreateCountryListCommandHandler>();
+        
         
         // USERS COMMANDS
         services.AddTransient<ICommandHandler<LoginUserCommand, AuthenticationResponse>, LoginUserCommandHandler>();
@@ -83,12 +88,14 @@ public static class DependencyInjection
         services.AddTransient<ICommandHandler<UpdateWarehouseCommand, BaseResponse<string>>, UpdateWarehouseCommandHandler>();
         services.AddTransient<ICommandHandler<SoftDeleteWarehouseCommand, BaseResponse<string>>, SoftDeleteWarehouseCommandHandler>();
         services.AddTransient<ICommandHandler<RestoreWarehouseCommand, BaseResponse<string>>, RestoreWarehouseCommandHandler>();
+        services.AddTransient<ICommandHandler<CreateWarehouseListCommand, BaseResponse<string>>, CreateWarehouseListCommandHandler>();
         
         // WAREHOUSES QUERIES
         services.AddTransient<IQueryHandler<GetWarehousesQuery, BaseResponse<IEnumerable<WarehouseDto>>>, GetWarehousesQueryHandler>();
         
         // WAREHOUSE ITEMS COMMANDS
         services.AddTransient<ICommandHandler<CreateWarehouseItemCommand, BaseResponse<string>>, CreateWarehouseItemCommandHandler>();
+        services.AddTransient<ICommandHandler<CreateWarehouseItemListCommand, BaseResponse<string>>, CreateWarehouseItemListCommandHandler>();
         
         // WAREHOUSE ITEMS QUERIES
         services.AddTransient<IQueryHandler<GetWarehousesWithItemsQuery, BaseResponse<IEnumerable<WarehousesWithItemsDto>>>, GetWarehousesWithItemsQueryHandler>();

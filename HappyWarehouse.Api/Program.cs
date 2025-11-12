@@ -3,10 +3,12 @@ using System.Text;
 using Asp.Versioning;
 using HappyWarehouse.Application;
 using HappyWarehouse.Application.Extensions;
+using HappyWarehouse.Application.Features.CountryFeature.Seed;
 using HappyWarehouse.Application.Features.UsersFeature.Models;
 using HappyWarehouse.Application.Features.UsersFeature.SeedData;
 using HappyWarehouse.Domain;
 using HappyWarehouse.Infrastructure;
+using HappyWarehouse.Infrastructure.Context;
 using HappyWarehouse.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -114,6 +116,7 @@ var app = builder.Build();
 //     var services = scope.ServiceProvider;
 //     await DbSeedApplicationUsers.SeedRolesAndUsersAsync(services);
 // }
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -11,14 +11,212 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HappyWarehouse.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251111174905_update-user-property-length")]
-    partial class updateuserpropertylength
+    [Migration("20251112192741_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
+
+            modelBuilder.Entity("HappyWarehouse.Domain.Entities.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("CountryName");
+
+                    b.Property<DateTime?>("RestoredAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RestoredBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id")
+                        .HasName("PK_CountryId");
+
+                    b.HasIndex("Name");
+
+                    b.ToTable("Countries", (string)null);
+                });
+
+            modelBuilder.Entity("HappyWarehouse.Domain.Entities.Warehouse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("AddressName");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("CityName");
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("CreatedByUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("WarehouseName");
+
+                    b.Property<DateTime?>("RestoredAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RestoredBy")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id")
+                        .HasName("PK_WarehouseId");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("Name");
+
+                    b.ToTable("Warehouses", (string)null);
+                });
+
+            modelBuilder.Entity("HappyWarehouse.Domain.Entities.WarehouseItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("CostPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("CreatedByUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal?>("MsrpPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Qty")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("RestoredAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RestoredBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SkuCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id")
+                        .HasName("PK_WarehouseItemId");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ItemName")
+                        .IsUnique();
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("WarehouseItems", (string)null);
+                });
 
             modelBuilder.Entity("HappyWarehouse.Domain.IdentityEntities.ApplicationRole", b =>
                 {
@@ -118,6 +316,9 @@ namespace HappyWarehouse.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("RefreshTokenExpiration")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("RestoredAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Role")
@@ -255,6 +456,41 @@ namespace HappyWarehouse.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("HappyWarehouse.Domain.Entities.Warehouse", b =>
+                {
+                    b.HasOne("HappyWarehouse.Domain.Entities.Country", "Country")
+                        .WithMany("Warehouses")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("FK_Warehouse_Country");
+
+                    b.HasOne("HappyWarehouse.Domain.IdentityEntities.ApplicationUser", "CreatedByUser")
+                        .WithMany("Warehouses")
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("CreatedByUser");
+                });
+
+            modelBuilder.Entity("HappyWarehouse.Domain.Entities.WarehouseItem", b =>
+                {
+                    b.HasOne("HappyWarehouse.Domain.IdentityEntities.ApplicationUser", "CreatedByUser")
+                        .WithMany("CreatedItems")
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.HasOne("HappyWarehouse.Domain.Entities.Warehouse", "Warehouse")
+                        .WithMany("WarehouseItems")
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("Warehouse");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("HappyWarehouse.Domain.IdentityEntities.ApplicationRole", null)
@@ -304,6 +540,23 @@ namespace HappyWarehouse.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HappyWarehouse.Domain.Entities.Country", b =>
+                {
+                    b.Navigation("Warehouses");
+                });
+
+            modelBuilder.Entity("HappyWarehouse.Domain.Entities.Warehouse", b =>
+                {
+                    b.Navigation("WarehouseItems");
+                });
+
+            modelBuilder.Entity("HappyWarehouse.Domain.IdentityEntities.ApplicationUser", b =>
+                {
+                    b.Navigation("CreatedItems");
+
+                    b.Navigation("Warehouses");
                 });
 #pragma warning restore 612, 618
         }
