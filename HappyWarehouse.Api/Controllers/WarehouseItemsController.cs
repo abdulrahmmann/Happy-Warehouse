@@ -3,6 +3,7 @@ using HappyWarehouse.Application.Caching;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.WarehouseItemFeature.Commands.CreateWarehouseItem;
 using HappyWarehouse.Application.Features.WarehouseItemFeature.DTOs;
+using HappyWarehouse.Application.Features.WarehouseItemFeature.Queries.GetItemByWarehouseId;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,15 @@ namespace HappyWarehouse.Controllers
         {
             var command = new CreateWarehouseItemCommand(itemDto);
             var response = await dispatcher.SendCommandAsync<CreateWarehouseItemCommand, BaseResponse<string>>(command);
+            return NewResult(response);
+        }
+        
+        [AllowAnonymous]
+        [HttpPost("get-items/{warehouseId}")]
+        public async Task<IActionResult> GetItemsByWarehouseId([FromQuery] int warehouseId)
+        {
+            var command = new GetItemsByWarehouseIdQuery(warehouseId);
+            var response = await dispatcher.SendQueryAsync<GetItemsByWarehouseIdQuery, BaseResponse<IEnumerable<WarehouseItemDto>>>(command);
             return NewResult(response);
         }
     }

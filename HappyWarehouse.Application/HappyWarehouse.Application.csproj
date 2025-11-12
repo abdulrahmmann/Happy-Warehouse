@@ -24,7 +24,6 @@
     <ItemGroup>
       <Folder Include="Features\CountryFeature\Queries\" />
       <Folder Include="Features\CountryFeature\Validators\" />
-      <Folder Include="Features\WarehouseItemFeature\Queries\" />
     </ItemGroup>
 
 </Project>

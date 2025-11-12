@@ -24,6 +24,8 @@ using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehouses
 using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehousesWithItems;
 using HappyWarehouse.Application.Features.WarehouseFeature.Validations;
 using HappyWarehouse.Application.Features.WarehouseItemFeature.Commands.CreateWarehouseItem;
+using HappyWarehouse.Application.Features.WarehouseItemFeature.DTOs;
+using HappyWarehouse.Application.Features.WarehouseItemFeature.Queries.GetItemByWarehouseId;
 using HappyWarehouse.Application.Features.WarehouseItemFeature.Validators;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.Extensions.Configuration;
@@ -82,6 +84,7 @@ public static class DependencyInjection
         
         // WAREHOUSE ITEMS QUERIES
         services.AddTransient<IQueryHandler<GetWarehousesWithItemsQuery, BaseResponse<IEnumerable<WarehousesWithItemsDto>>>, GetWarehousesWithItemsQueryHandler>();
+        services.AddTransient<IQueryHandler<GetItemsByWarehouseIdQuery, BaseResponse<IEnumerable<WarehouseItemDto>>>, GetItemsByWarehouseIdQueryHandler>();
         
         return services;
     }
