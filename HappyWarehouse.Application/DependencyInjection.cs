@@ -10,6 +10,7 @@ using HappyWarehouse.Application.Features.UsersFeature.Commands.RestoreUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.UpdateUser;
 using HappyWarehouse.Application.Features.UsersFeature.DTOs;
 using HappyWarehouse.Application.Features.UsersFeature.Queries.GetAllUsers;
+using HappyWarehouse.Application.Features.UsersFeature.Queries.GetUserRole;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GeneratePrincipalJwtToken;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateRefreshToken;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateToken;
@@ -56,6 +57,7 @@ public static class DependencyInjection
         
         // USERS QUERIES
         services.AddTransient<IQueryHandler<GetAllUsersQuery, UserResponse<IEnumerable<UserDetailsDto>>>, GetAllUsersQueryHandler>();
+        services.AddTransient<IQueryHandler<GetUserRolesByEmailQuery, string>, GetUserRolesByEmailQueryHandler>();
         
         // COUNTRIES COMMANDS
         services.AddTransient<ICommandHandler<CreateCountryCommand, BaseResponse<string>>, CreateCountryCommandHandler>();

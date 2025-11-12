@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using HappyWarehouse.Application.Caching;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.CreateWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.DeleteWarehouse;
@@ -16,7 +17,7 @@ namespace HappyWarehouse.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    public class WarehouseController(Dispatcher dispatcher) : AppControllerBase
+    public class WarehouseController(Dispatcher dispatcher, IRedisCacheService cacheService) : AppControllerBase
     {
         [AllowAnonymous]
         [HttpPost("create-warehouse")]
@@ -58,8 +59,19 @@ namespace HappyWarehouse.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetWarehouses()
         {
+            const string key = "all-warehouses";
+            var cachedWarehouses = cacheService.GetData<BaseResponse<IEnumerable<WarehouseDto>>>(key);
+            
+            if (cachedWarehouses is not null)
+            {
+                return NewResult(cachedWarehouses);
+            }
+            
             var command = new GetWarehousesQuery();
             var response = await dispatcher.SendQueryAsync<GetWarehousesQuery, BaseResponse<IEnumerable<WarehouseDto>>>(command);
+            
+            cacheService.SetData(key, response);
+            
             return NewResult(response);
         }
     }

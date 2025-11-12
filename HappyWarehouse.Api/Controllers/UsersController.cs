@@ -7,6 +7,7 @@ using HappyWarehouse.Application.Features.UsersFeature.Commands.RestoreUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.UpdateUser;
 using HappyWarehouse.Application.Features.UsersFeature.DTOs;
 using HappyWarehouse.Application.Features.UsersFeature.Queries.GetAllUsers;
+using HappyWarehouse.Application.Features.UsersFeature.Queries.GetUserRole;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -79,6 +80,15 @@ namespace HappyWarehouse.Controllers
             var query = new GetAllUsersQuery();
             var users = await _dispatcher.SendQueryAsync<GetAllUsersQuery, UserResponse<IEnumerable<UserDetailsDto>>>(query);
             return NewResult(users);
+        }
+        
+        [AllowAnonymous]
+        [HttpGet("user-role/{email}")]
+        public async Task<IActionResult> GetUserRoleByEmail([FromRoute] string email)
+        {
+            var query = new GetUserRolesByEmailQuery(email);
+            var user = await _dispatcher.SendQueryAsync<GetUserRolesByEmailQuery, string>(query);
+            return Ok(user);
         }
     }
 }
