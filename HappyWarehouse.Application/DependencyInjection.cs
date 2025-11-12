@@ -17,6 +17,8 @@ using HappyWarehouse.Application.Features.WarehouseFeature.Commands.CreateWareho
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.DeleteWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.RestoreWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.UpdateWarehouse;
+using HappyWarehouse.Application.Features.WarehouseFeature.DTOs;
+using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehouses;
 using HappyWarehouse.Application.Features.WarehouseFeature.Validations;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.Extensions.Configuration;
@@ -61,6 +63,8 @@ public static class DependencyInjection
         services.AddTransient<ICommandHandler<SoftDeleteWarehouseCommand, BaseResponse<string>>, SoftDeleteWarehouseCommandHandler>();
         services.AddTransient<ICommandHandler<RestoreWarehouseCommand, BaseResponse<string>>, RestoreWarehouseCommandHandler>();
         
+        // WAREHOUSES QUERIES
+        services.AddTransient<IQueryHandler<GetWarehousesQuery, BaseResponse<IEnumerable<WarehouseDto>>>, GetWarehousesQueryHandler>();
         
         return services;
     }

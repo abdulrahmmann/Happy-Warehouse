@@ -5,6 +5,7 @@ using HappyWarehouse.Application.Features.WarehouseFeature.Commands.DeleteWareho
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.RestoreWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.UpdateWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.DTOs;
+using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehouses;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -50,6 +51,15 @@ namespace HappyWarehouse.Controllers
         {
             var command = new RestoreWarehouseCommand(id, restoreBy);
             var response = await dispatcher.SendCommandAsync<RestoreWarehouseCommand, BaseResponse<string>>(command);
+            return NewResult(response);
+        }
+        
+        [AllowAnonymous]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetWarehouses()
+        {
+            var command = new GetWarehousesQuery();
+            var response = await dispatcher.SendQueryAsync<GetWarehousesQuery, BaseResponse<IEnumerable<WarehouseDto>>>(command);
             return NewResult(response);
         }
     }

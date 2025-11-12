@@ -1,0 +1,39 @@
+﻿using HappyWarehouse.Application.Common;
+using HappyWarehouse.Application.Features.WarehouseFeature.DTOs;
+using HappyWarehouse.Domain.CQRS;
+using HappyWarehouse.Domain.Entities;
+using HappyWarehouse.Infrastructure.UOF;
+using Serilog;
+
+namespace HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehouses;
+
+public class GetWarehousesQueryHandler(IUnitOfWork unitOfWork, ILogger logger): IQueryHandler<GetWarehousesQuery, BaseResponse<IEnumerable<WarehouseDto>>>
+{
+    public async Task<BaseResponse<IEnumerable<WarehouseDto>>> HandleAsync(GetWarehousesQuery query, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var warehouses = await unitOfWork.GetRepository<Warehouse>().GetAllAsync();
+
+            var enumerable = warehouses.ToList();
+            
+            if (enumerable.Count == 0)
+            {
+                logger.Warning("No Warehouses found");
+                return BaseResponse<IEnumerable<WarehouseDto>>.NoContent("No Warehouses found");
+            }
+
+            var warehousesMapped = enumerable.Select(w => new WarehouseDto(w.Id, w.Name, w.Address, w.City, 
+                w.CountryId, w.CreatedByUserId ?? 1, w.CreatedAt, w.CreatedBy, w.ModifiedAt, w.ModifiedBy));
+            
+            return BaseResponse<IEnumerable<WarehouseDto>>
+                .Success(data: warehousesMapped, totalCount: enumerable.Count(), message: "Warehouses retrieved successfully");
+            
+        }
+        catch (Exception e)
+        {
+            logger.Information("Unexpected server error. Please try again later");
+            return BaseResponse<IEnumerable<WarehouseDto>>.InternalError("Unexpected server error. Please try again later");
+        }
+    }
+}
