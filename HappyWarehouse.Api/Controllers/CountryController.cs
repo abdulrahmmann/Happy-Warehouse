@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using HappyWarehouse.Application.Caching;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.CountryFeature.Commands.CreateCountry;
 using HappyWarehouse.Application.Features.CountryFeature.Commands.CreateList;
@@ -15,8 +16,41 @@ namespace HappyWarehouse.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    public class CountryController(Dispatcher dispatcher) : AppControllerBase
+    public class CountryController(Dispatcher dispatcher, IRedisCacheService cacheService) : AppControllerBase
     {
+        #region GET Endpoints
+        [AllowAnonymous]
+        [HttpGet("list")]
+        public async Task<IActionResult> GetAllCountry()
+        {
+            var cachedCountry = cacheService.GetData<BaseResponse<IEnumerable<CountryDto>>>("all-countries");
+
+            if (cachedCountry is not null)
+            {
+                return NewResult(cachedCountry);
+            }
+            
+            var command = new GetAllCountriesQuery();
+            var response = await dispatcher.SendQueryAsync<GetAllCountriesQuery, BaseResponse<IEnumerable<CountryDto>>>(command);
+            
+            cacheService.SetData("all-countries", response);
+            
+            return NewResult(response);
+        }
+        #endregion
+        
+        #region PUT Endpoints
+        [Authorize(Roles = "Admin")]
+        [HttpPut("update-country/id={id}")]
+        public async Task<IActionResult> UpdateCountry([FromQuery] int id, [FromBody] UpdateCountryDto countryDto)
+        {
+            var command = new UpdateCountryCommand(id, countryDto);
+            var response = await dispatcher.SendCommandAsync<UpdateCountryCommand, BaseResponse<string>>(command);
+            return NewResult(response);
+        }
+        #endregion
+
+        #region POST Endpoints
         [Authorize(Roles = "Admin")]
         [HttpPost("create-country")]
         public async Task<IActionResult> CreateCountry([FromBody] CreateCountryDto countryDto)
@@ -34,24 +68,10 @@ namespace HappyWarehouse.Controllers
             var response = await dispatcher.SendCommandAsync<CreateCountryListCommand, BaseResponse<string>>(command);
             return NewResult(response);
         }
+        #endregion
         
-        [Authorize(Roles = "Admin")]
-        [HttpPost("update-country")]
-        public async Task<IActionResult> UpdateCountry(int id, [FromBody] UpdateCountryDto countryDto)
-        {
-            var command = new UpdateCountryCommand(id, countryDto);
-            var response = await dispatcher.SendCommandAsync<UpdateCountryCommand, BaseResponse<string>>(command);
-            return NewResult(response);
-        }
         
-        [AllowAnonymous]
-        [HttpGet("list")]
-        public async Task<IActionResult> GetAllCountry()
-        {
-            var command = new GetAllCountriesQuery();
-            var response = await dispatcher.SendQueryAsync<GetAllCountriesQuery, BaseResponse<IEnumerable<CountryDto>>>(command);
-            return NewResult(response);
-        }
+        
         
     }
 }
