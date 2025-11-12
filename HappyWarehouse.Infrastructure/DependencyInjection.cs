@@ -52,6 +52,7 @@ public static class DependencyInjection
         // REGISTER REPOSITORIES    
         services.AddScoped<ICountryRepository, CountryRepository>();
         services.AddScoped<IWarehouseRepository, WarehouseRepository>();
+        services.AddScoped<IWarehouseItemRepository, WarehouseItemRepository>();
         
         return services;
     }
