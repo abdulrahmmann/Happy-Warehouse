@@ -4,9 +4,12 @@ namespace HappyWarehouse.Domain.IRepository;
 
 public interface ICountryRepository: IGenericRepository<Country>
 {
+    /// <summary> Method to Update Country. </summary>
     Task UpdateAsync(Country country, string? modifiedBy = null);
 
-    Task SoftlyDelete(int id, string? deletedBy = null);
+    /// <summary> Method to Softly Delete Country. </summary>
+    Task SoftlyDeleteAsync(int id, string? deletedBy = null);
     
-    Task Restore(int id, string? restoredBy = null);
+    /// <summary> Method to Restore Country. </summary>
+    Task RestoreAsync(int id, string? restoredBy = null);
 }

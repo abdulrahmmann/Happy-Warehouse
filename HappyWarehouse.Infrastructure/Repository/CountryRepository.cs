@@ -29,7 +29,7 @@ public class CountryRepository: GenericRepository<Country>, ICountryRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task SoftlyDelete(int id, string? deletedBy = null)
+    public async Task SoftlyDeleteAsync(int id, string? deletedBy = null)
     {
         var existingCountry = await _dbContext.Countries.FirstOrDefaultAsync(c => c.Id == id);
 
@@ -38,7 +38,7 @@ public class CountryRepository: GenericRepository<Country>, ICountryRepository
         existingCountry.SoftDelete(deletedBy);
     }
 
-    public async Task Restore(int id, string? restoredBy = null)
+    public async Task RestoreAsync(int id, string? restoredBy = null)
     {
         var existingCountry = await _dbContext.Countries.FirstOrDefaultAsync(c => c.Id == id);
 

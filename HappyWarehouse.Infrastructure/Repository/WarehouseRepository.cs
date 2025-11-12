@@ -27,7 +27,7 @@ public class WarehouseRepository: GenericRepository<Warehouse>, IWarehouseReposi
         existingWarehouse.Update(warehouse.Name, warehouse.Address, warehouse.City, warehouse.CountryId, modifiedBy);
     }
 
-    public async Task SoftlyDelete(int id, string? deletedBy = null)
+    public async Task SoftlyDeleteAsync(int id, string? deletedBy = null)
     {
         var existingWarehouse = await _dbContext.Warehouses.FirstOrDefaultAsync(c => c.Id == id);
 
@@ -36,7 +36,7 @@ public class WarehouseRepository: GenericRepository<Warehouse>, IWarehouseReposi
         existingWarehouse.SoftDelete(deletedBy);
     }
 
-    public async Task Restore(int id, string? restoredBy = null)
+    public async Task RestoreAsync(int id, string? restoredBy = null)
     {
         var existingWarehouse = await _dbContext.Warehouses.FirstOrDefaultAsync(c => c.Id == id);
 

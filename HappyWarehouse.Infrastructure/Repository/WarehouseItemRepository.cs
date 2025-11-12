@@ -40,7 +40,7 @@ public class WarehouseItemRepository: GenericRepository<WarehouseItem>, IWarehou
         existingItem.Update(item.ItemName, item.Qty, item.CostPrice, item.MsrpPrice, item.SkuCode, modifiedBy);
     }
 
-    public async Task SoftlyDelete(int id, string? deletedBy = null)
+    public async Task SoftlyDeleteAsync(int id, string? deletedBy = null)
     {
         var existingItem = await _dbContext.WarehouseItems.FirstOrDefaultAsync(i => i.Id == id);
 
@@ -50,7 +50,7 @@ public class WarehouseItemRepository: GenericRepository<WarehouseItem>, IWarehou
         existingItem.SoftDelete(deletedBy);
     }
 
-    public async Task Restore(int id, string? restoredBy = null)
+    public async Task RestoreAsync(int id, string? restoredBy = null)
     {
         var existingItem = await _dbContext.WarehouseItems.FirstOrDefaultAsync(i => i.Id == id);
 
