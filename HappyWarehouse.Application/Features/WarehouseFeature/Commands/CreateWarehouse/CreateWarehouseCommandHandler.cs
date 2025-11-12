@@ -37,7 +37,7 @@ public class CreateWarehouseCommandHandler(IUnitOfWork unitOfWork, ILogger logge
                 return BaseResponse<string>.Conflict($"Warehouse '{request.Name}' is already exists.");
             }
 
-            var warehouse = Warehouse.Create(request.Name, request.Address, request.City, request.CountryId, request.CreatedByUserId);
+            var warehouse = Warehouse.Create(request.Name, request.Address, request.City, request.CountryId, request.CreatedByUserId, request.CreatedBy);
 
             await unitOfWork.GetRepository<Warehouse>().AddAsync(warehouse);
             
@@ -47,7 +47,7 @@ public class CreateWarehouseCommandHandler(IUnitOfWork unitOfWork, ILogger logge
 
             logger.Information("Warehouse '{WarehouseName}' created successfully with ID: {WarehouseId}", warehouse.Name, warehouse.Id);
 
-            return BaseResponse<string>.Created($"Country with Name:  created successfully");
+            return BaseResponse<string>.Created($"Warehouse with Name: {request.Name} created successfully");
         }
         catch (Exception e)
         {

@@ -13,6 +13,7 @@ using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GeneratePri
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateRefreshToken;
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateToken;
 using HappyWarehouse.Application.Features.UsersFeature.Validations;
+using HappyWarehouse.Application.Features.WarehouseFeature.Commands.CreateWarehouse;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,6 +47,9 @@ public static class DependencyInjection
         // COUNTRIES COMMANDS
         services.AddTransient<ICommandHandler<CreateCountryCommand, BaseResponse<string>>, CreateCountryCommandHandler>();
         services.AddTransient<ICommandHandler<UpdateCountryCommand, BaseResponse<string>>, UpdateCountryCommandHandler>();
+        
+        // WAREHOUSES COMMANDS
+        services.AddTransient<ICommandHandler<CreateWarehouseCommand, BaseResponse<string>>, CreateWarehouseCommandHandler>();
         
         
         return services;

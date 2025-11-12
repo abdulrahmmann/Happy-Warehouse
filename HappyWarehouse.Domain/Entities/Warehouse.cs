@@ -44,7 +44,7 @@ public class Warehouse: Entity<int>
     
     #region Create Warehouse.
     /// <summary> Method to Create Warehouse. </summary>
-    public static Warehouse Create(string name, string address, string city, int countryId, int? createdByUserId = null)
+    public static Warehouse Create(string name, string address, string city, int countryId, int? createdByUserId = null, string? createdByUser = null)
     {
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
         if (string.IsNullOrWhiteSpace(address)) throw new ArgumentNullException(nameof(address));
@@ -59,7 +59,7 @@ public class Warehouse: Entity<int>
             CreatedByUserId = createdByUserId
         };
         
-        warehouse.MarkCreated();
+        warehouse.MarkCreated(createdByUser);
         
         return warehouse;
     }
