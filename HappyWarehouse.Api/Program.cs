@@ -98,6 +98,13 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("redis");
+
+    options.InstanceName = "HappyWarehouses_";
+});
+
 
 
 var app = builder.Build();
