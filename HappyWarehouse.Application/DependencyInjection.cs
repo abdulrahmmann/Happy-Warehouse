@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using HappyWarehouse.Application.Caching;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.CountryFeature.Commands.CreateCountry;
 using HappyWarehouse.Application.Features.CountryFeature.Commands.UpdateCountry;
@@ -30,6 +31,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplicationDependencies(this IServiceCollection services, IConfiguration configuration)
     {
+        // Register Redis Cache
+        services.AddScoped<IRedisCacheService, RedisCacheService>();
+        
         // Register JWT Services
         services.AddScoped<IGenerateRefreshTokenService, GenerateRefreshTokenService>();
         services.AddScoped<IGenerateTokenService, GenerateTokenService>();
