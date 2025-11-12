@@ -8,6 +8,12 @@ public interface IUnitOfWork: IDisposable
 {
     IGenericRepository<T> GetRepository<T>() where T : class;
     
+    ICountryRepository GetCountryRepository { get; }
+    
+    IWarehouseRepository GetWarehouseRepository { get; }
+    
+    IWarehouseItemRepository GetWarehouseItemRepository { get; }
+    
     ApplicationDbContext GetDbContext { get; }
     
     IDbTransaction BeginTransaction();

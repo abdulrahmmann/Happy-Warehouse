@@ -11,14 +11,20 @@ public class UnitOfWork: IUnitOfWork
     #region Instance Fields
     private readonly ApplicationDbContext  _dbContext;
     private readonly Dictionary<Type, object> _repositories;
+    public ICountryRepository GetCountryRepository { get; }
+    public IWarehouseRepository GetWarehouseRepository { get; }
+    public IWarehouseItemRepository GetWarehouseItemRepository { get; }
     public ApplicationDbContext GetDbContext { get; }
     #endregion
 
     #region Constructor
-    public UnitOfWork(ApplicationDbContext dbContext, ApplicationDbContext context)
+    public UnitOfWork(ApplicationDbContext dbContext, ApplicationDbContext context, ICountryRepository getCountryRepository, IWarehouseRepository getWarehouseRepository, IWarehouseItemRepository getWarehouseItemRepository)
     {
         _dbContext = dbContext;
         GetDbContext = context;
+        GetCountryRepository = getCountryRepository;
+        GetWarehouseRepository = getWarehouseRepository;
+        GetWarehouseItemRepository = getWarehouseItemRepository;
         _repositories = new Dictionary<Type, object>();
     }
     #endregion
@@ -35,7 +41,7 @@ public class UnitOfWork: IUnitOfWork
 
         return (IGenericRepository<T>)_repositories[type];
     }
-    
+
     public IDbTransaction BeginTransaction()
     {
         return _dbContext.Database.BeginTransaction().GetDbTransaction();
