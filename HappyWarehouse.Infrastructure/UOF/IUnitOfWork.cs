@@ -14,6 +14,8 @@ public interface IUnitOfWork: IDisposable
     
     IWarehouseItemRepository GetWarehouseItemRepository { get; }
     
+    IDashboardRepository GetDashboardRepository { get; }
+    
     ApplicationDbContext GetDbContext { get; }
     
     IDbTransaction BeginTransaction();

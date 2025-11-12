@@ -1,0 +1,27 @@
+﻿using HappyWarehouse.Domain.Entities;
+using HappyWarehouse.Domain.IRepository;
+using HappyWarehouse.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
+
+namespace HappyWarehouse.Infrastructure.Repository;
+
+public class DashboardRepository(ApplicationDbContext dbContext): IDashboardRepository
+{
+    public async Task<List<Warehouse>> GetWarehouseStatusAsync()
+    {
+        return await dbContext.Warehouses
+            .IgnoreQueryFilters()
+            .Include(w => w.WarehouseItems)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task<List<WarehouseItem>> GetTopItemsAsync()
+    {
+        return await dbContext.WarehouseItems
+            .IgnoreQueryFilters()
+            .Include(w => w.Warehouse)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+}

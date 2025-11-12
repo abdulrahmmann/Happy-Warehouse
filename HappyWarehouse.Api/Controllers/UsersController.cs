@@ -58,7 +58,7 @@ namespace HappyWarehouse.Controllers
         
         [Authorize(Roles = "Admin")]
         [HttpPut("restore-user")]
-        public async Task<IActionResult> ChangePassword([FromQuery] string email)
+        public async Task<IActionResult> RestoreUser([FromQuery] string email)
         {
             var command = new RestoreUserCommand(email);
             var response = await dispatcher.SendCommandAsync<RestoreUserCommand, AuthenticationResponse>(command);

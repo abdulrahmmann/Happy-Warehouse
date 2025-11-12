@@ -14,18 +14,20 @@ public class UnitOfWork: IUnitOfWork
     public ICountryRepository GetCountryRepository { get; }
     public IWarehouseRepository GetWarehouseRepository { get; }
     public IWarehouseItemRepository GetWarehouseItemRepository { get; }
+    public IDashboardRepository GetDashboardRepository { get; }
     public ApplicationDbContext GetDbContext { get; }
     #endregion
 
     #region Constructor
     public UnitOfWork(ApplicationDbContext dbContext, ApplicationDbContext context, ICountryRepository getCountryRepository, 
-        IWarehouseRepository getWarehouseRepository, IWarehouseItemRepository getWarehouseItemRepository)
+        IWarehouseRepository getWarehouseRepository, IWarehouseItemRepository getWarehouseItemRepository, IDashboardRepository getDashboardRepository)
     {
         _dbContext = dbContext;
         GetDbContext = context;
         GetCountryRepository = getCountryRepository;
         GetWarehouseRepository = getWarehouseRepository;
         GetWarehouseItemRepository = getWarehouseItemRepository;
+        GetDashboardRepository = getDashboardRepository;
         _repositories = new Dictionary<Type, object>();
     }
     #endregion

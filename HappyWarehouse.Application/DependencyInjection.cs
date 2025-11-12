@@ -3,6 +3,9 @@ using HappyWarehouse.Application.Caching;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.CountryFeature.Commands.CreateCountry;
 using HappyWarehouse.Application.Features.CountryFeature.Commands.UpdateCountry;
+using HappyWarehouse.Application.Features.DashboardFeature.DTOs;
+using HappyWarehouse.Application.Features.DashboardFeature.Queries.GetWarehouseStatus;
+using HappyWarehouse.Application.Features.DashboardFeature.Queries.WarehouseTopItems;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.ChangePassword;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.DeleteUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.LoginUser;
@@ -85,6 +88,12 @@ public static class DependencyInjection
         // WAREHOUSE ITEMS QUERIES
         services.AddTransient<IQueryHandler<GetWarehousesWithItemsQuery, BaseResponse<IEnumerable<WarehousesWithItemsDto>>>, GetWarehousesWithItemsQueryHandler>();
         services.AddTransient<IQueryHandler<GetItemsByWarehouseIdQuery, BaseResponse<IEnumerable<WarehouseItemDto>>>, GetItemsByWarehouseIdQueryHandler>();
+        
+        // DASHBOARDS COMMANDS
+        
+        // DASHBOARDS QUERIES
+        services.AddTransient<IQueryHandler<GetWarehouseStatusQuery, BaseResponse<List<WarehouseStatusDto>>>, GetWarehouseStatusQueryHandler>();
+        services.AddTransient<IQueryHandler<GetTopHighItemsQuery, BaseResponse<List<WarehouseTopItemsDto>>>, GetTopHighItemsQueryHandler>();
         
         return services;
     }
