@@ -22,6 +22,8 @@ using HappyWarehouse.Application.Features.WarehouseFeature.Commands.UpdateWareho
 using HappyWarehouse.Application.Features.WarehouseFeature.DTOs;
 using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehouses;
 using HappyWarehouse.Application.Features.WarehouseFeature.Validations;
+using HappyWarehouse.Application.Features.WarehouseItemFeature.Commands.CreateWarehouseItem;
+using HappyWarehouse.Application.Features.WarehouseItemFeature.Validators;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +49,8 @@ public static class DependencyInjection
         services.AddValidatorsFromAssemblyContaining<CreateWarehouseValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateWarehouseValidator>();
         
+        services.AddValidatorsFromAssemblyContaining<CreateWarehouseItemValidator>();
+        
         // Register CQRS Functionality: Request + handler
         // USERS COMMANDS
         services.AddTransient<ICommandHandler<LoginUserCommand, AuthenticationResponse>, LoginUserCommandHandler>();
@@ -71,6 +75,11 @@ public static class DependencyInjection
         
         // WAREHOUSES QUERIES
         services.AddTransient<IQueryHandler<GetWarehousesQuery, BaseResponse<IEnumerable<WarehouseDto>>>, GetWarehousesQueryHandler>();
+        
+        // WAREHOUSE ITEMS COMMANDS
+        services.AddTransient<ICommandHandler<CreateWarehouseItemCommand, BaseResponse<string>>, CreateWarehouseItemCommandHandler>();
+        
+        // WAREHOUSE ITEMS QUERIES
         
         return services;
     }

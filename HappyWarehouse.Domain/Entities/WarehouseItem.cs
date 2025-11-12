@@ -52,7 +52,7 @@ public class WarehouseItem: Entity<int>
     public ApplicationUser? CreatedByUser { get; private set; } = null!;
     
     private WarehouseItem() {}
-    public WarehouseItem(string itemName, string? skuCode, int qty, decimal costPrice, decimal? msrpPrice, int warehouseId, int? createdByUserId)
+    public WarehouseItem(string itemName, string? skuCode, int qty, decimal costPrice, decimal? msrpPrice, int warehouseId, int? createdByUserId, string? createdBy = null)
     {
         ItemName = itemName;
         SkuCode = skuCode;
@@ -61,6 +61,7 @@ public class WarehouseItem: Entity<int>
         MsrpPrice = msrpPrice;
         WarehouseId = warehouseId;
         CreatedByUserId = createdByUserId;
+        CreatedBy = createdBy;
     }
 
     #region Update WarehouseItem.

@@ -25,6 +25,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Areas\WarehouseItemsController\Controllers\" />
+      <Folder Include="Areas\WarehouseItemsController\Data\" />
+      <Folder Include="Areas\WarehouseItemsController\Models\" />
+      <Folder Include="Areas\WarehouseItemsController\Views\" />
       <Folder Include="Controllers\" />
     </ItemGroup>
 
