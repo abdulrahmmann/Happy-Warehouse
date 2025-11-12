@@ -38,17 +38,6 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         #endregion
-        
-        #region PUT Endpoints
-        [Authorize(Roles = "Admin")]
-        [HttpPut("update-country/id={id}")]
-        public async Task<IActionResult> UpdateCountry([FromQuery] int id, [FromBody] UpdateCountryDto countryDto)
-        {
-            var command = new UpdateCountryCommand(id, countryDto);
-            var response = await dispatcher.SendCommandAsync<UpdateCountryCommand, BaseResponse<string>>(command);
-            return NewResult(response);
-        }
-        #endregion
 
         #region POST Endpoints
         [Authorize(Roles = "Admin")]
@@ -70,8 +59,15 @@ namespace HappyWarehouse.Controllers
         }
         #endregion
         
-        
-        
-        
+        #region PUT Endpoints
+        [Authorize(Roles = "Admin")]
+        [HttpPut("update-country/id={id}")]
+        public async Task<IActionResult> UpdateCountry([FromQuery] int id, [FromBody] UpdateCountryDto countryDto)
+        {
+            var command = new UpdateCountryCommand(id, countryDto);
+            var response = await dispatcher.SendCommandAsync<UpdateCountryCommand, BaseResponse<string>>(command);
+            return NewResult(response);
+        }
+        #endregion
     }
 }
