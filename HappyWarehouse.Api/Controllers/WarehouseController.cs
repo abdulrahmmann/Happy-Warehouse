@@ -7,6 +7,7 @@ using HappyWarehouse.Application.Features.WarehouseFeature.Commands.RestoreWareh
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.UpdateWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.DTOs;
 using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehouses;
+using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehousesWithItems;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -74,5 +75,15 @@ namespace HappyWarehouse.Controllers
             
             return NewResult(response);
         }
+        
+        [AllowAnonymous]
+        [HttpGet("warehouses-with-items")]
+        public async Task<IActionResult> GetWarehousesWithItems()
+        {
+            var query = new GetWarehousesWithItemsQuery();
+            var response = await dispatcher.SendQueryAsync<GetWarehousesWithItemsQuery, BaseResponse<IEnumerable<WarehousesWithItemsDto>>>(query);
+            return NewResult(response);
+        }
+
     }
 }

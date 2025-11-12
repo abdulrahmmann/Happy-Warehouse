@@ -21,6 +21,7 @@ using HappyWarehouse.Application.Features.WarehouseFeature.Commands.RestoreWareh
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.UpdateWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.DTOs;
 using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehouses;
+using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehousesWithItems;
 using HappyWarehouse.Application.Features.WarehouseFeature.Validations;
 using HappyWarehouse.Application.Features.WarehouseItemFeature.Commands.CreateWarehouseItem;
 using HappyWarehouse.Application.Features.WarehouseItemFeature.Validators;
@@ -80,6 +81,7 @@ public static class DependencyInjection
         services.AddTransient<ICommandHandler<CreateWarehouseItemCommand, BaseResponse<string>>, CreateWarehouseItemCommandHandler>();
         
         // WAREHOUSE ITEMS QUERIES
+        services.AddTransient<IQueryHandler<GetWarehousesWithItemsQuery, BaseResponse<IEnumerable<WarehousesWithItemsDto>>>, GetWarehousesWithItemsQueryHandler>();
         
         return services;
     }
