@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using HappyWarehouse.Application.Caching;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.DashboardFeature.DTOs;
 using HappyWarehouse.Application.Features.DashboardFeature.Queries.GetWarehouseStatus;
@@ -13,14 +14,24 @@ namespace HappyWarehouse.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    public class DashboardController(Dispatcher dispatcher) : AppControllerBase
+    public class DashboardController(Dispatcher dispatcher, IRedisCacheService cacheService) : AppControllerBase
     {
         [AllowAnonymous]
         [HttpGet("warehouse-status")]
         public async Task<IActionResult> GetWarehouseStatus()
         {
+            var cachedWarehouseStatus = cacheService.GetData<BaseResponse<List<WarehouseStatusDto>>>("warehouse-status");
+
+            if (cachedWarehouseStatus is not null)
+            {
+                return NewResult(cachedWarehouseStatus);
+            }
+            
             var command = new GetWarehouseStatusQuery();
             var response = await dispatcher.SendQueryAsync<GetWarehouseStatusQuery, BaseResponse<List<WarehouseStatusDto>>>(command);
+            
+            cacheService.SetData("warehouse-status", response);
+            
             return NewResult(response);
         }
         
@@ -28,8 +39,18 @@ namespace HappyWarehouse.Controllers
         [HttpGet("warehouse-top-items")]
         public async Task<IActionResult> GetWarehouseTopItems(int top = 10)
         {
+            var cachedWarehouseTopItems = cacheService.GetData<BaseResponse<List<WarehouseStatusDto>>>("warehouse-top-items");
+
+            if (cachedWarehouseTopItems is not null)
+            {
+                return NewResult(cachedWarehouseTopItems);
+            }
+            
             var command = new GetTopHighItemsQuery();
             var response = await dispatcher.SendQueryAsync<GetTopHighItemsQuery, BaseResponse<List<WarehouseTopItemsDto>>>(command);
+            
+            cacheService.SetData("warehouse-top-items", response);
+            
             return NewResult(response);
         }
     }
