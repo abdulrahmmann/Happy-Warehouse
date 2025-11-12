@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.CreateWarehouse;
+using HappyWarehouse.Application.Features.WarehouseFeature.Commands.UpdateWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.DTOs;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.AspNetCore.Authorization;
@@ -20,6 +21,15 @@ namespace HappyWarehouse.Controllers
         {
             var command = new CreateWarehouseCommand(warehouseDto);
             var response = await dispatcher.SendCommandAsync<CreateWarehouseCommand, BaseResponse<string>>(command);
+            return NewResult(response);
+        } 
+        
+        [AllowAnonymous]
+        [HttpPost("update-warehouse")]
+        public async Task<IActionResult> UpdateCountry(int id, [FromBody] UpdateWarehouseDto warehouseDto)
+        {
+            var command = new UpdateWarehouseCommand(id, warehouseDto);
+            var response = await dispatcher.SendCommandAsync<UpdateWarehouseCommand, BaseResponse<string>>(command);
             return NewResult(response);
         } 
     }
