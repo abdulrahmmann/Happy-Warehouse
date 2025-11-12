@@ -50,6 +50,8 @@ public static class DependencyInjection
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         
         // REGISTER REPOSITORIES    
+        services.AddScoped<ICountryRepository, CountryRepository>();
+        services.AddScoped<IWarehouseRepository, WarehouseRepository>();
         
         return services;
     }

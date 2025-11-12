@@ -1,0 +1,70 @@
+﻿using HappyWarehouse.Domain.Entities;
+using HappyWarehouse.Domain.IRepository;
+using HappyWarehouse.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
+
+namespace HappyWarehouse.Infrastructure.Repository;
+
+public class WarehouseRepository: GenericRepository<Warehouse>, IWarehouseRepository
+{
+    #region Instance Fields
+    private readonly ApplicationDbContext _dbContext;
+    #endregion
+
+    #region Constructor
+    public WarehouseRepository(ApplicationDbContext dbContext) : base(dbContext)
+    {
+        _dbContext = dbContext;
+    }
+    #endregion
+    
+    public async Task UpdateAsync(Warehouse warehouse, string? modifiedBy = null)
+    {
+        var existingWarehouse = await _dbContext.Warehouses.FirstOrDefaultAsync(c => c.Id == warehouse.Id);
+
+        if (existingWarehouse == null) throw new KeyNotFoundException($"Warehouse with ID {warehouse.Id} not found.");
+        
+        existingWarehouse.Update(warehouse.Name, warehouse.Address, warehouse.City, warehouse.CountryId, modifiedBy);
+    }
+
+    public async Task SoftlyDelete(int id, string? deletedBy = null)
+    {
+        var existingWarehouse = await _dbContext.Warehouses.FirstOrDefaultAsync(c => c.Id == id);
+
+        if (existingWarehouse == null) throw new KeyNotFoundException($"Warehouse with ID {id} not found."); 
+        
+        existingWarehouse.SoftDelete(deletedBy);
+    }
+
+    public async Task Restore(int id, string? restoredBy = null)
+    {
+        var existingWarehouse = await _dbContext.Warehouses.FirstOrDefaultAsync(c => c.Id == id);
+
+        if (existingWarehouse == null) throw new KeyNotFoundException($"Warehouse with ID {id} not found."); 
+        
+        existingWarehouse.Restore(restoredBy);
+    }
+
+    public async Task<WarehouseItem> AddItemAsync(int warehouseId, string itemName, string? skuCode, int qty, decimal costPrice, decimal? msrpPrice, int? createdByUserId, string? createdByUser)
+    {
+        var warehouse = await _dbContext.Warehouses
+            .Include(w => w.WarehouseItems)
+            .FirstOrDefaultAsync(w => w.Id == warehouseId);
+
+        if (warehouse == null)
+            throw new KeyNotFoundException($"Warehouse with ID {warehouseId} not found.");
+
+        var newItem = warehouse.AddWarehouseItem(
+            itemName,
+            skuCode,
+            qty,
+            costPrice,
+            msrpPrice,
+            warehouseId,
+            createdByUserId,
+            createdByUser
+        );
+
+        return newItem;
+    }
+}

@@ -1,0 +1,18 @@
+﻿using HappyWarehouse.Domain.Entities;
+
+namespace HappyWarehouse.Domain.IRepository;
+
+public interface IWarehouseRepository: IGenericRepository<Warehouse>
+{
+    /// <summary> Method to Update Warehouse. </summary>
+    Task UpdateAsync(Warehouse warehouse, string? modifiedBy = null);
+
+    /// <summary> Method to Softly Delete Warehouse. </summary>
+    Task SoftlyDelete(int id, string? deletedBy = null);
+    
+    /// <summary> Method to Restore Deleted Warehouse. </summary>
+    Task Restore(int id, string? restoredBy = null);
+    
+    /// <summary> Method to Add Item to Warehouse. </summary>
+    Task<WarehouseItem> AddItemAsync(int warehouseId, string itemName, string? skuCode, int qty, decimal costPrice, decimal? msrpPrice, int? createdByUserId, string? createdByUser);
+}
