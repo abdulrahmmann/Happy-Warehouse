@@ -18,31 +18,23 @@ namespace HappyWarehouse.Controllers
     [Route("api/v1/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    public class UsersController : AppControllerBase
+    public class UsersController(Dispatcher dispatcher) : AppControllerBase
     {
-        private readonly Dispatcher _dispatcher;
-
-        public UsersController(Dispatcher dispatcher)
-        {
-            _dispatcher = dispatcher;
-        }
-
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserDto userDto)
         {
             var command = new LoginUserCommand(userDto);
-            var response = await _dispatcher.SendCommandAsync<LoginUserCommand, AuthenticationResponse>(command);
+            var response = await dispatcher.SendCommandAsync<LoginUserCommand, AuthenticationResponse>(command);
             return NewResult(response);
         }
-        
         
         [Authorize(Roles = "Admin")]
         [HttpPut("update")]
         public async Task<IActionResult> UpdateUser([FromQuery] string email, [FromBody] UpdateUserDto userDto)
         {
             var command = new UpdateUserCommand(email, userDto);
-            var response = await _dispatcher.SendCommandAsync<UpdateUserCommand, AuthenticationResponse>(command);
+            var response = await dispatcher.SendCommandAsync<UpdateUserCommand, AuthenticationResponse>(command);
             return NewResult(response);
         }
         
@@ -51,7 +43,7 @@ namespace HappyWarehouse.Controllers
         public async Task<IActionResult> ChangePassword([FromQuery] string email, [FromBody] ChangePasswordDto passwordDto)
         {
             var command = new ChangePasswordCommand(email, passwordDto);
-            var response = await _dispatcher.SendCommandAsync<ChangePasswordCommand, AuthenticationResponse>(command);
+            var response = await dispatcher.SendCommandAsync<ChangePasswordCommand, AuthenticationResponse>(command);
             return NewResult(response);
         }
         
@@ -60,7 +52,7 @@ namespace HappyWarehouse.Controllers
         public async Task<IActionResult> SoftDeleteUser([FromQuery] string email)
         {
             var command = new SoftDeleteUserCommand(email);
-            var response = await _dispatcher.SendCommandAsync<SoftDeleteUserCommand, AuthenticationResponse>(command);
+            var response = await dispatcher.SendCommandAsync<SoftDeleteUserCommand, AuthenticationResponse>(command);
             return NewResult(response);
         }
         
@@ -69,7 +61,7 @@ namespace HappyWarehouse.Controllers
         public async Task<IActionResult> ChangePassword([FromQuery] string email)
         {
             var command = new RestoreUserCommand(email);
-            var response = await _dispatcher.SendCommandAsync<RestoreUserCommand, AuthenticationResponse>(command);
+            var response = await dispatcher.SendCommandAsync<RestoreUserCommand, AuthenticationResponse>(command);
             return NewResult(response);
         }
         
@@ -78,16 +70,16 @@ namespace HappyWarehouse.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             var query = new GetAllUsersQuery();
-            var users = await _dispatcher.SendQueryAsync<GetAllUsersQuery, UserResponse<IEnumerable<UserDetailsDto>>>(query);
+            var users = await dispatcher.SendQueryAsync<GetAllUsersQuery, UserResponse<IEnumerable<UserDetailsDto>>>(query);
             return NewResult(users);
         }
         
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [HttpGet("user-role/{email}")]
         public async Task<IActionResult> GetUserRoleByEmail([FromRoute] string email)
         {
             var query = new GetUserRolesByEmailQuery(email);
-            var user = await _dispatcher.SendQueryAsync<GetUserRolesByEmailQuery, string>(query);
+            var user = await dispatcher.SendQueryAsync<GetUserRolesByEmailQuery, string>(query);
             return Ok(user);
         }
     }
