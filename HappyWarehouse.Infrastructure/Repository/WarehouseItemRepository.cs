@@ -61,6 +61,11 @@ public class WarehouseItemRepository: GenericRepository<WarehouseItem>, IWarehou
         existingItem.Restore(restoredBy);
     }
 
+    public async Task<IEnumerable<WarehouseItem>> GetAllItemsByWarehouseIdAsync(int warehouseId, CancellationToken cancellationToken)
+    {
+        return await _dbContext.WarehouseItems.Where(wi => wi.WarehouseId == warehouseId).ToListAsync(cancellationToken);
+    }
+    
     public async Task<WarehouseItem> FirstOrDefaultAsync(Expression<Func<WarehouseItem, bool>> predicate, CancellationToken cancellationToken)
     {
         return (await _dbContext.WarehouseItems.FirstOrDefaultAsync(predicate, cancellationToken))!;
