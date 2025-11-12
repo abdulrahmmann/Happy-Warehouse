@@ -69,6 +69,15 @@ public class WarehouseRepository: GenericRepository<Warehouse>, IWarehouseReposi
         return newItem;
     }
 
+    public async Task<IEnumerable<Warehouse>> GetAllWithItemsAsync(CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Warehouses
+            .Include(c => c.Country)
+            .Include(wi => wi.WarehouseItems)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<Warehouse> FirstOrDefaultAsync(Expression<Func<Warehouse, bool>> predicate, CancellationToken cancellationToken)
     {
         return (await _dbContext.Warehouses.FirstOrDefaultAsync(predicate, cancellationToken))!;
