@@ -1,5 +1,8 @@
 ﻿using HappyWarehouse.Domain.IdentityEntities;
+using HappyWarehouse.Domain.IRepository;
 using HappyWarehouse.Infrastructure.Context;
+using HappyWarehouse.Infrastructure.Repository;
+using HappyWarehouse.Infrastructure.UOF;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -40,9 +43,11 @@ public static class DependencyInjection
             .AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, int>>();
         
         
-        // REGISTER UNIT OF WORK    
+        // REGISTER UNIT OF WORK
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         
         // REGISTER GENERIC REPOSITORY  
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         
         // REGISTER REPOSITORIES    
         

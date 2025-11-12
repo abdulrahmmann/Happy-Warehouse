@@ -23,11 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Repository\" />
-      <Folder Include="UOF\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\HappyWarehouse.Domain\HappyWarehouse.Domain.csproj" />
     </ItemGroup>
 
