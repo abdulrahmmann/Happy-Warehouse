@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.CreateWarehouse;
+using HappyWarehouse.Application.Features.WarehouseFeature.Commands.DeleteWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.UpdateWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.DTOs;
 using HappyWarehouse.Domain.CQRS;
@@ -32,5 +33,14 @@ namespace HappyWarehouse.Controllers
             var response = await dispatcher.SendCommandAsync<UpdateWarehouseCommand, BaseResponse<string>>(command);
             return NewResult(response);
         } 
+        
+        [AllowAnonymous]
+        [HttpDelete("delete-warehouse")]
+        public async Task<IActionResult> DeleteWarehouse(int id)
+        {
+            var command = new SoftDeleteWarehouseCommand(id);
+            var response = await dispatcher.SendCommandAsync<SoftDeleteWarehouseCommand, BaseResponse<string>>(command);
+            return NewResult(response);
+        }
     }
 }
