@@ -21,4 +21,9 @@
       <ProjectReference Include="..\HappyWarehouse.Infrastructure\HappyWarehouse.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Features\CountryFeature\Queries\" />
+      <Folder Include="Features\CountryFeature\Validators\" />
+    </ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
-﻿using HappyWarehouse.Domain.Entities;
+﻿using System.Linq.Expressions;
+using HappyWarehouse.Domain.Entities;
 using HappyWarehouse.Domain.IRepository;
 using HappyWarehouse.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -45,5 +46,10 @@ public class CountryRepository: GenericRepository<Country>, ICountryRepository
         if (existingCountry == null) throw new KeyNotFoundException($"Country with ID {id} not found."); 
         
         existingCountry.Restore(restoredBy);
+    }
+
+    public async Task<Country> FindAsync(Expression<Func<Country, bool>> predicate)
+    {
+        return (await _dbContext.Countries.FirstOrDefaultAsync(predicate))!;
     }
 }
