@@ -14,6 +14,8 @@ using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateRef
 using HappyWarehouse.Application.Features.UsersFeature.TokenServices.GenerateToken;
 using HappyWarehouse.Application.Features.UsersFeature.Validations;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.CreateWarehouse;
+using HappyWarehouse.Application.Features.WarehouseFeature.Commands.UpdateWarehouse;
+using HappyWarehouse.Application.Features.WarehouseFeature.Validations;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +35,9 @@ public static class DependencyInjection
         services.AddValidatorsFromAssemblyContaining<LoginUserValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateUserValidator>();
         
+        services.AddValidatorsFromAssemblyContaining<CreateWarehouseValidator>();
+        services.AddValidatorsFromAssemblyContaining<UpdateWarehouseValidator>();
+        
         // Register CQRS Functionality: Request + handler
         // USERS COMMANDS
         services.AddTransient<ICommandHandler<LoginUserCommand, AuthenticationResponse>, LoginUserCommandHandler>();
@@ -50,6 +55,7 @@ public static class DependencyInjection
         
         // WAREHOUSES COMMANDS
         services.AddTransient<ICommandHandler<CreateWarehouseCommand, BaseResponse<string>>, CreateWarehouseCommandHandler>();
+        services.AddTransient<ICommandHandler<UpdateWarehouseCommand, BaseResponse<string>>, UpdateWarehouseCommandHandler>();
         
         
         return services;

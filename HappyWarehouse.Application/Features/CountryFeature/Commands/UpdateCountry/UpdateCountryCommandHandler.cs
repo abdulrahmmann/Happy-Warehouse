@@ -25,7 +25,8 @@ public class UpdateCountryCommandHandler(IUnitOfWork unitOfWork, ILogger logger)
                 return BaseResponse<string>.NotFound("Country does not exist.");
             }
 
-            var duplicate = await unitOfWork.GetCountryRepository.FirstOrDefaultAsync(c => c.Name.Equals(request.Name, StringComparison.CurrentCultureIgnoreCase), cancellationToken);
+            var duplicate = await unitOfWork.GetCountryRepository
+                .FirstOrDefaultAsync(c => c.Name.Equals(request.Name, StringComparison.CurrentCultureIgnoreCase), cancellationToken);
             
             if (duplicate != null)
             {

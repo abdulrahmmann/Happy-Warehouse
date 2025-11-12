@@ -69,8 +69,8 @@ public class WarehouseRepository: GenericRepository<Warehouse>, IWarehouseReposi
         return newItem;
     }
 
-    public async Task<Country> FirstOrDefaultAsync(Expression<Func<Country, bool>> predicate, CancellationToken cancellationToken)
+    public async Task<Warehouse> FirstOrDefaultAsync(Expression<Func<Warehouse, bool>> predicate, CancellationToken cancellationToken)
     {
-        return (await _dbContext.Countries.FirstOrDefaultAsync(predicate, cancellationToken))!;
+        return (await _dbContext.Warehouses.FirstOrDefaultAsync(predicate, cancellationToken))!;
     }
 }

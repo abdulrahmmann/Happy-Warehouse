@@ -18,7 +18,8 @@ public class UnitOfWork: IUnitOfWork
     #endregion
 
     #region Constructor
-    public UnitOfWork(ApplicationDbContext dbContext, ApplicationDbContext context, ICountryRepository getCountryRepository, IWarehouseRepository getWarehouseRepository, IWarehouseItemRepository getWarehouseItemRepository)
+    public UnitOfWork(ApplicationDbContext dbContext, ApplicationDbContext context, ICountryRepository getCountryRepository, 
+        IWarehouseRepository getWarehouseRepository, IWarehouseItemRepository getWarehouseItemRepository)
     {
         _dbContext = dbContext;
         GetDbContext = context;
