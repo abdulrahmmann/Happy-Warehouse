@@ -1,4 +1,5 @@
-﻿using HappyWarehouse.Domain.Entities;
+﻿using System.Linq.Expressions;
+using HappyWarehouse.Domain.Entities;
 using HappyWarehouse.Domain.IRepository;
 using HappyWarehouse.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -66,5 +67,10 @@ public class WarehouseRepository: GenericRepository<Warehouse>, IWarehouseReposi
         );
 
         return newItem;
+    }
+
+    public async Task<Country> FirstOrDefaultAsync(Expression<Func<Country, bool>> predicate, CancellationToken cancellationToken)
+    {
+        return (await _dbContext.Countries.FirstOrDefaultAsync(predicate, cancellationToken))!;
     }
 }

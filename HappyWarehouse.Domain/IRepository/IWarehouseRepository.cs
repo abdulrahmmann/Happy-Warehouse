@@ -1,4 +1,5 @@
-﻿using HappyWarehouse.Domain.Entities;
+﻿using System.Linq.Expressions;
+using HappyWarehouse.Domain.Entities;
 
 namespace HappyWarehouse.Domain.IRepository;
 
@@ -15,4 +16,6 @@ public interface IWarehouseRepository: IGenericRepository<Warehouse>
     
     /// <summary> Method to Add Item to Warehouse. </summary>
     Task<WarehouseItem> AddItemAsync(int warehouseId, string itemName, string? skuCode, int qty, decimal costPrice, decimal? msrpPrice, int? createdByUserId, string? createdByUser);
+    
+    public Task<Country> FirstOrDefaultAsync(Expression<Func<Country, bool>> predicate, CancellationToken cancellationToken);
 }
