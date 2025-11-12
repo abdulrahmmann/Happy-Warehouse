@@ -16,7 +16,7 @@ namespace HappyWarehouse.Controllers
     [ApiVersion("1.0")]
     public class WarehouseItemsController(Dispatcher dispatcher, IRedisCacheService cacheService) : AppControllerBase
     {
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [HttpPost("create-item")]
         public async Task<IActionResult> CreateItem([FromBody] CreateWarehouseItemDto itemDto)
         {
@@ -25,7 +25,7 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [HttpPost("get-items/{warehouseId}")]
         public async Task<IActionResult> GetItemsByWarehouseId([FromQuery] int warehouseId)
         {
