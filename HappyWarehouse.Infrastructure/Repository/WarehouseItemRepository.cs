@@ -1,4 +1,5 @@
-﻿using HappyWarehouse.Domain.Entities;
+﻿using System.Linq.Expressions;
+using HappyWarehouse.Domain.Entities;
 using HappyWarehouse.Domain.IRepository;
 using HappyWarehouse.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -58,5 +59,15 @@ public class WarehouseItemRepository: GenericRepository<WarehouseItem>, IWarehou
             throw new KeyNotFoundException($"WarehouseItem with ID {id} not found.");
 
         existingItem.Restore(restoredBy);
+    }
+
+    public async Task<WarehouseItem> FirstOrDefaultAsync(Expression<Func<WarehouseItem, bool>> predicate, CancellationToken cancellationToken)
+    {
+        return (await _dbContext.WarehouseItems.FirstOrDefaultAsync(predicate, cancellationToken))!;
+    }
+
+    public async Task<WarehouseItem> FirstOrDefaultAsyncWithIgnoreQueryFilter(Expression<Func<WarehouseItem, bool>> predicate, CancellationToken cancellationToken)
+    {
+        return (await _dbContext.WarehouseItems.IgnoreQueryFilters().FirstOrDefaultAsync(predicate, cancellationToken))!;
     }
 }
