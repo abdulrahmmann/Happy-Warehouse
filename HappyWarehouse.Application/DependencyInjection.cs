@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using HappyWarehouse.Application.Common;
+using HappyWarehouse.Application.Features.CountryFeature.Commands.CreateCountry;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.ChangePassword;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.DeleteUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.LoginUser;
@@ -31,15 +32,19 @@ public static class DependencyInjection
         services.AddValidatorsFromAssemblyContaining<UpdateUserValidator>();
         
         // Register CQRS Functionality: Request + handler
-        // COMMANDS
+        // USERS COMMANDS
         services.AddTransient<ICommandHandler<LoginUserCommand, AuthenticationResponse>, LoginUserCommandHandler>();
         services.AddTransient<ICommandHandler<UpdateUserCommand, AuthenticationResponse>, UpdateUserCommandHandler>();
         services.AddTransient<ICommandHandler<SoftDeleteUserCommand, AuthenticationResponse>, SoftDeleteUserCommandHandler>();
         services.AddTransient<ICommandHandler<RestoreUserCommand, AuthenticationResponse>, RestoreUserCommandHandler>();
         services.AddTransient<ICommandHandler<ChangePasswordCommand, AuthenticationResponse>, ChangePasswordCommandHandler>();
         
-        // QUERIES
+        // USERS QUERIES
         services.AddTransient<IQueryHandler<GetAllUsersQuery, UserResponse<IEnumerable<UserDetailsDto>>>, GetAllUsersQueryHandler>();
+        
+        // COUNTRIES COMMANDS
+        services.AddTransient<ICommandHandler<CreateCountryCommand, BaseResponse<string>>, CreateCountryCommandHandler>();
+        
         
         return services;
     }
