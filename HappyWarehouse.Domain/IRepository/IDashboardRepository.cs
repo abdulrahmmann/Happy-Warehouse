@@ -6,4 +6,5 @@ public interface IDashboardRepository
 {
     Task<List<Warehouse>> GetWarehouseStatusAsync();
     Task<List<WarehouseItem>> GetTopItemsAsync();
+    Task<List<Warehouse>> GetWarehouseWithCountInventoryAsync();
 }

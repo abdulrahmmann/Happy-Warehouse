@@ -3,6 +3,7 @@ using HappyWarehouse.Application.Caching;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.DashboardFeature.DTOs;
 using HappyWarehouse.Application.Features.DashboardFeature.Queries.GetWarehouseStatus;
+using HappyWarehouse.Application.Features.DashboardFeature.Queries.GetWarehouseWithCountInventory;
 using HappyWarehouse.Application.Features.DashboardFeature.Queries.WarehouseTopItems;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.AspNetCore.Authorization;
@@ -50,6 +51,25 @@ namespace HappyWarehouse.Controllers
             var response = await dispatcher.SendQueryAsync<GetTopHighItemsQuery, BaseResponse<List<WarehouseTopItemsDto>>>(command);
             
             cacheService.SetData("warehouse-top-items", response);
+            
+            return NewResult(response);
+        }
+
+        [AllowAnonymous] [HttpGet("warehouse-inventory-details")]
+        public async Task<IActionResult> GetWarehouseWithInventoryDetails(int page = 1, int pageSize = 10)
+        {
+            var warehouseInventoryCounts = cacheService.GetData<BaseResponse<List<WarehouseCountInventoryStatusDto>>>("warehouse-inventory-details");
+            
+            if (warehouseInventoryCounts is not null)
+            {
+                return NewResult(warehouseInventoryCounts);
+            }
+            
+            var query = new GetWarehouseWithCountInventoryQuery(page, pageSize);
+            var response = await dispatcher
+                .SendQueryAsync<GetWarehouseWithCountInventoryQuery, BaseResponse<List<WarehouseCountInventoryStatusDto>>>(query);
+            
+            cacheService.SetData("warehouse-inventory-details", response);
             
             return NewResult(response);
         }

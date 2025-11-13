@@ -12,6 +12,7 @@ using HappyWarehouse.Application.Features.UsersFeature.Queries.GetAllUsers;
 using HappyWarehouse.Application.Features.UsersFeature.Queries.GetUserRole;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HappyWarehouse.Controllers
@@ -20,6 +21,7 @@ namespace HappyWarehouse.Controllers
     [Route("api/v1/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
+    [EnableCors]
     public class UsersController(Dispatcher dispatcher) 
         : AppControllerBase
     {

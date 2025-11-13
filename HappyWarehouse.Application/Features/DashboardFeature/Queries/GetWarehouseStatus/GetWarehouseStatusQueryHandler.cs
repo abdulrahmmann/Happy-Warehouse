@@ -2,7 +2,6 @@
 using HappyWarehouse.Application.Features.DashboardFeature.DTOs;
 using HappyWarehouse.Domain.CQRS;
 using HappyWarehouse.Infrastructure.UOF;
-using Serilog;
 
 namespace HappyWarehouse.Application.Features.DashboardFeature.Queries.GetWarehouseStatus;
 

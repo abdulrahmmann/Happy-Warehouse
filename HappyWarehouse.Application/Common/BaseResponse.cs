@@ -29,6 +29,7 @@ public class BaseResponse<T>
     
     
     #region Constructors
+    public BaseResponse() { }
     private BaseResponse(T? data, HttpStatusCode httpStatusCode, string message, int? totalCount = null)
     {
         TotalCount = totalCount;

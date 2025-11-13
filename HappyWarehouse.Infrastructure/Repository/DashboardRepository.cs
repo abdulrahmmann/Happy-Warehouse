@@ -24,4 +24,13 @@ public class DashboardRepository(ApplicationDbContext dbContext): IDashboardRepo
             .AsNoTracking()
             .ToListAsync();
     }
+    
+    public async Task<List<Warehouse>> GetWarehouseWithCountInventoryAsync()
+    {
+        return await dbContext.Warehouses
+            .Include(w => w.Country)
+            .Include(w => w.WarehouseItems)
+            .AsNoTracking()
+            .ToListAsync();
+    }
 }

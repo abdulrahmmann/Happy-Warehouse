@@ -89,6 +89,14 @@ builder.Services.AddApiVersioning(config =>
     config.ApiVersionReader = new UrlSegmentApiVersionReader();
 });
 
+// REDIS
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+
+    options.InstanceName = "HappyWarehouses_";
+});
+
 // CORS
 builder.Services.AddCors(options =>
 {
@@ -99,16 +107,6 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
-
-// REDIS
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetConnectionString("Redis");
-
-    options.InstanceName = "HappyWarehouses_";
-});
-
-
 
 var app = builder.Build();
 
@@ -134,9 +132,9 @@ app.UseRouting();
 
 app.UseCors();
 
-app.UseAuthentication();
-
 app.UseAuthorization();
+
+app.UseAuthentication();
 
 app.MapControllers();
 
