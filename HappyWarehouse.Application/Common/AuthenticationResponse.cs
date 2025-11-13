@@ -52,7 +52,7 @@ public class AuthenticationResponse
         };
     }
     
-    public static AuthenticationResponse Success(string message, IEnumerable<string>? errors = null, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
+    public static AuthenticationResponse Success(string? message, IEnumerable<string>? errors = null, HttpStatusCode statusCode = HttpStatusCode.OK)
     {
         return new AuthenticationResponse
         {

@@ -11,6 +11,7 @@ using HappyWarehouse.Application.Features.DashboardFeature.Queries.GetWarehouseS
 using HappyWarehouse.Application.Features.DashboardFeature.Queries.WarehouseTopItems;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.ChangePassword;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.DeleteUser;
+using HappyWarehouse.Application.Features.UsersFeature.Commands.GenerateNewAccessToken;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.LoginUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.RestoreUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.UpdateUser;
@@ -69,6 +70,7 @@ public static class DependencyInjection
         
         
         // USERS COMMANDS
+        services.AddTransient<ICommandHandler<GenerateNewAccessTokenCommand, AuthenticationResponse>, GenerateNewAccessTokenCommandHandler>();
         services.AddTransient<ICommandHandler<LoginUserCommand, AuthenticationResponse>, LoginUserCommandHandler>();
         services.AddTransient<ICommandHandler<UpdateUserCommand, AuthenticationResponse>, UpdateUserCommandHandler>();
         services.AddTransient<ICommandHandler<SoftDeleteUserCommand, AuthenticationResponse>, SoftDeleteUserCommandHandler>();

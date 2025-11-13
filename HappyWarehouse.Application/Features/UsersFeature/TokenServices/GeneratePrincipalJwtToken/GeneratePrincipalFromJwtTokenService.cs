@@ -31,9 +31,9 @@ public class GeneratePrincipalFromJwtTokenService: IGeneratePrincipalFromJwtToke
             ValidateIssuerSigningKey = true,
             ValidateLifetime = false,
             
-            ValidAudience = jwtSettings.Audience,
-            ValidIssuer = jwtSettings.Issuer,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SECRET_KEY)),
+            ValidAudience = _configuration["Jwt:Audience"],
+            ValidIssuer = _configuration["Jwt:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SECRET_KEY"]!)),
         };
         var tokenHandler = new JwtSecurityTokenHandler();
         

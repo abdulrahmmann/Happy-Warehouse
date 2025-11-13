@@ -2,10 +2,12 @@ using Asp.Versioning;
 using HappyWarehouse.Application.Common;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.ChangePassword;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.DeleteUser;
+using HappyWarehouse.Application.Features.UsersFeature.Commands.GenerateNewAccessToken;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.LoginUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.RestoreUser;
 using HappyWarehouse.Application.Features.UsersFeature.Commands.UpdateUser;
 using HappyWarehouse.Application.Features.UsersFeature.DTOs;
+using HappyWarehouse.Application.Features.UsersFeature.Models;
 using HappyWarehouse.Application.Features.UsersFeature.Queries.GetAllUsers;
 using HappyWarehouse.Application.Features.UsersFeature.Queries.GetUserRole;
 using HappyWarehouse.Domain.CQRS;
@@ -18,7 +20,8 @@ namespace HappyWarehouse.Controllers
     [Route("api/v1/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    public class UsersController(Dispatcher dispatcher) : AppControllerBase
+    public class UsersController(Dispatcher dispatcher) 
+        : AppControllerBase
     {
         [AllowAnonymous]
         [HttpPost("login")]
@@ -81,6 +84,15 @@ namespace HappyWarehouse.Controllers
             var query = new GetUserRolesByEmailQuery(email);
             var user = await dispatcher.SendQueryAsync<GetUserRolesByEmailQuery, string>(query);
             return Ok(user);
+        }
+        
+        [HttpPost("generate-new-access-token")]
+        public async Task<IActionResult> GenerateNewAccessToken(TokenModel tokenModel)
+        {
+            var command = new GenerateNewAccessTokenCommand(tokenModel);
+            var user = await dispatcher
+                .SendCommandAsync<GenerateNewAccessTokenCommand, AuthenticationResponse>(command);
+            return NewResult(user);
         }
     }
 }
