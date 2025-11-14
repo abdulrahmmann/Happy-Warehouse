@@ -29,6 +29,7 @@ using HappyWarehouse.Application.Features.WarehouseFeature.Commands.DeleteWareho
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.RestoreWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.Commands.UpdateWarehouse;
 using HappyWarehouse.Application.Features.WarehouseFeature.DTOs;
+using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehouseById;
 using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehouses;
 using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehousesWithItems;
 using HappyWarehouse.Application.Features.WarehouseFeature.Validations;
@@ -95,6 +96,7 @@ public static class DependencyInjection
         
         // WAREHOUSES QUERIES
         services.AddTransient<IQueryHandler<GetWarehousesQuery, BaseResponse<IEnumerable<WarehouseDto>>>, GetWarehousesQueryHandler>();
+        services.AddTransient<IQueryHandler<GetWarehouseByIdQuery, BaseResponse<WarehouseDto2>>, GetWarehouseByIdQueryHandler>();
         
         // WAREHOUSE ITEMS COMMANDS
         services.AddTransient<ICommandHandler<CreateWarehouseItemCommand, BaseResponse<string>>, CreateWarehouseItemCommandHandler>();
@@ -108,7 +110,7 @@ public static class DependencyInjection
         
         // DASHBOARDS QUERIES
         services.AddTransient<IQueryHandler<GetWarehouseStatusQuery, BaseResponse<List<WarehouseStatusDto>>>, GetWarehouseStatusQueryHandler>();
-        services.AddTransient<IQueryHandler<GetTopHighItemsQuery, BaseResponse<List<WarehouseTopItemsDto>>>, GetTopHighItemsQueryHandler>();
+        services.AddTransient<IQueryHandler<GetTopItemsQuery, BaseResponse<List<WarehouseTopItemsDto>>>, GetTopItemsQueryHandler>();
         services.AddTransient<IQueryHandler<GetWarehouseWithCountInventoryQuery, BaseResponse<List<WarehouseCountInventoryStatusDto>>>, GetWarehouseWithCountInventoryQueryHandler>();
         
         return services;

@@ -75,6 +75,7 @@ public class GenerateTokenService: IGenerateTokenService
         
         // Return AuthenticationResponse.
         return AuthenticationResponse.Success(
+            userId:user.Id,
             username: user.UserName!,
             email: user.Email!,
             token: token,

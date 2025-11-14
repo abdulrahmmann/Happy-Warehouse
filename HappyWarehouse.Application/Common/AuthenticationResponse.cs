@@ -17,18 +17,21 @@ public class AuthenticationResponse
     public List<string>? Errors { get; set; }
 
     [JsonPropertyOrder(5)]
+    public int? UserId { get; set; }
+    
+    [JsonPropertyOrder(6)]
     public string? Username { get; set; }
 
-    [JsonPropertyOrder(6)]
+    [JsonPropertyOrder(7)]
     public string? Email { get; set; }
 
-    [JsonPropertyOrder(7)]
+    [JsonPropertyOrder(8)]
     public string Token { get; set; } = string.Empty;
 
-    [JsonPropertyOrder(8)] 
+    [JsonPropertyOrder(9)] 
     public string? RefreshToken { get; set; } = string.Empty;
 
-    [JsonPropertyOrder(9)]
+    [JsonPropertyOrder(10)]
     public DateTime RefreshTokenExpiration { get; set; } 
     
     [JsonPropertyOrder(20)]
@@ -40,6 +43,24 @@ public class AuthenticationResponse
     {
         return new AuthenticationResponse
         {
+            Username = username,
+            Email = email,
+            Token = token,
+            RefreshToken = refreshToken,
+            RefreshTokenExpiration = refreshTokenExpiration,
+            Expiration = expiration,
+            HttpStatusCode = HttpStatusCode.OK,
+            Timestamp = DateTime.UtcNow,
+            Message = message
+        };
+    }
+    
+    public static AuthenticationResponse Success(int userId, string username, string email, string token, string refreshToken, 
+        DateTime refreshTokenExpiration, DateTime expiration, string message = "Operation successful")
+    {
+        return new AuthenticationResponse
+        {
+            UserId = userId,
             Username = username,
             Email = email,
             Token = token,

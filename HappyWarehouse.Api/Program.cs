@@ -98,15 +98,33 @@ builder.Services.AddStackExchangeRedisCache(options =>
 });
 
 // CORS
+// builder.Services.AddCors(options =>
+// {
+//     options.AddDefaultPolicy(policyBuilder =>
+//     {
+//         policyBuilder.WithOrigins(
+//                 "http://localhost:3000",
+//                 "http://localhost:3001",
+//                 "http://localhost:3002",
+//                 "http://localhost:5173", // Vite default port
+//                 "http://localhost:5174"  // Vite alternate port
+//             )
+//             .AllowAnyMethod()
+//             .AllowAnyHeader()
+//             .AllowCredentials();
+//     });
+// });
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policyBuilder =>
     {
-        policyBuilder.WithOrigins("http://localhost:4200")
+        policyBuilder
             .AllowAnyMethod()
-            .AllowAnyHeader();
+            .AllowAnyHeader()
+            .AllowCredentials();
     });
 });
+
 
 var app = builder.Build();
 
@@ -132,9 +150,9 @@ app.UseRouting();
 
 app.UseCors();
 
-app.UseAuthorization();
-
 app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();
 

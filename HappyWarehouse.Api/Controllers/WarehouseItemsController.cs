@@ -20,7 +20,7 @@ namespace HappyWarehouse.Controllers
         #region GET Endpoints
         [AllowAnonymous]
         [HttpGet("get-items/{warehouseId}")]
-        public async Task<IActionResult> GetItemsByWarehouseId([FromQuery] int warehouseId)
+        public async Task<IActionResult> GetItemsByWarehouseId(int warehouseId)
         {
             var cachedKey = $"warehouse-items-{warehouseId}";
             var cachedWarehouseItems = cacheService.GetData<BaseResponse<IEnumerable<WarehouseItemDto>>>(cachedKey);

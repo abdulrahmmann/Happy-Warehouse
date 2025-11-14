@@ -20,6 +20,8 @@ public interface IWarehouseRepository: IGenericRepository<Warehouse>
     Task<IEnumerable<Warehouse>> GetAllWithItemsAsync(CancellationToken cancellationToken = default);
 
     public IQueryable<Warehouse> GetAllQueryable();
+
+    Task<Warehouse> GetWarehouseByIdAsync(int id, CancellationToken cancellationToken);
     
     public Task<Warehouse> FirstOrDefaultAsync(Expression<Func<Warehouse, bool>> predicate, CancellationToken cancellationToken);
     public Task<Warehouse> FirstOrDefaultAsyncWithIgnoreQueryFilter(Expression<Func<Warehouse, bool>> predicate, CancellationToken cancellationToken);

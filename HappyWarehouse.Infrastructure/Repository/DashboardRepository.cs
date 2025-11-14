@@ -10,7 +10,6 @@ public class DashboardRepository(ApplicationDbContext dbContext): IDashboardRepo
     public async Task<List<Warehouse>> GetWarehouseStatusAsync()
     {
         return await dbContext.Warehouses
-            .IgnoreQueryFilters()
             .Include(w => w.WarehouseItems)
             .AsNoTracking()
             .ToListAsync();
@@ -19,7 +18,6 @@ public class DashboardRepository(ApplicationDbContext dbContext): IDashboardRepo
     public async Task<List<WarehouseItem>> GetTopItemsAsync()
     {
         return await dbContext.WarehouseItems
-            .IgnoreQueryFilters()
             .Include(w => w.Warehouse)
             .AsNoTracking()
             .ToListAsync();

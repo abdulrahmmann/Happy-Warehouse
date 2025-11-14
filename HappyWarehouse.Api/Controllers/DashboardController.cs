@@ -37,26 +37,27 @@ namespace HappyWarehouse.Controllers
         }
         
         [AllowAnonymous]
-        [HttpGet("warehouse-top-items")]
-        public async Task<IActionResult> GetWarehouseTopItems(int top = 10)
+        [HttpGet("top-warehouse-items")]
+        public async Task<IActionResult> GetTopItems(int top = 10)
         {
-            var cachedWarehouseTopItems = cacheService.GetData<BaseResponse<List<WarehouseStatusDto>>>("warehouse-top-items");
+            var cachedTopItems = cacheService.GetData<BaseResponse<List<WarehouseTopItemsDto>>>("top-ten-items");
 
-            if (cachedWarehouseTopItems is not null)
+            if (cachedTopItems is not null)
             {
-                return NewResult(cachedWarehouseTopItems);
+                return NewResult(cachedTopItems);
             }
             
-            var command = new GetTopHighItemsQuery();
-            var response = await dispatcher.SendQueryAsync<GetTopHighItemsQuery, BaseResponse<List<WarehouseTopItemsDto>>>(command);
+            var query = new GetTopItemsQuery(top);
+            var response = await dispatcher.SendQueryAsync<GetTopItemsQuery, BaseResponse<List<WarehouseTopItemsDto>>>(query);
             
-            cacheService.SetData("warehouse-top-items", response);
+            cacheService.SetData("top-ten-items", response);
             
             return NewResult(response);
         }
-
-        [AllowAnonymous] [HttpGet("warehouse-inventory-details")]
-        public async Task<IActionResult> GetWarehouseWithInventoryDetails(int page = 1, int pageSize = 10)
+        
+        [AllowAnonymous]
+        [HttpGet("warehouse-inventory-details")]
+        public async Task<IActionResult> GetWarehouseWithInventoryDetails(int page = 1, int pageSize = 20)
         {
             var warehouseInventoryCounts = cacheService.GetData<BaseResponse<List<WarehouseCountInventoryStatusDto>>>("warehouse-inventory-details");
             

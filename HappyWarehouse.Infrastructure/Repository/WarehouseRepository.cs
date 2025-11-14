@@ -80,9 +80,9 @@ public class WarehouseRepository: GenericRepository<Warehouse>, IWarehouseReposi
 
     public IQueryable<Warehouse> GetAllQueryable()
     {
-        return _dbContext.Warehouses.Where(w => !w.IsDeleted).AsNoTracking();
+        return _dbContext.Warehouses.Include(w => w.Country).Include(w => w.CreatedByUser).AsNoTracking();
     }
-
+    
     public async Task<Warehouse> FirstOrDefaultAsync(Expression<Func<Warehouse, bool>> predicate, CancellationToken cancellationToken)
     {
         return (await _dbContext.Warehouses.FirstOrDefaultAsync(predicate, cancellationToken))!;
@@ -91,5 +91,11 @@ public class WarehouseRepository: GenericRepository<Warehouse>, IWarehouseReposi
     public async Task<Warehouse> FirstOrDefaultAsyncWithIgnoreQueryFilter(Expression<Func<Warehouse, bool>> predicate, CancellationToken cancellationToken)
     {
         return (await _dbContext.Warehouses.IgnoreQueryFilters().FirstOrDefaultAsync(predicate, cancellationToken))!;
+    }
+
+    public async Task<Warehouse> GetWarehouseByIdAsync(int id, CancellationToken cancellationToken)
+    {
+        return (await _dbContext.Warehouses.Include(w => w.Country)
+            .FirstOrDefaultAsync(w => w.Id == id, cancellationToken))!;
     }
 }

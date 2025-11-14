@@ -30,7 +30,7 @@ public class GetWarehousesQueryHandler(IUnitOfWork unitOfWork, ILogger logger): 
             }
 
             var warehousesMapped = enumerable.Select(w => new WarehouseDto(w.Id, w.Name, w.Address, w.City, 
-                w.CountryId, w.CreatedByUserId ?? 1, w.CreatedAt, w.CreatedBy, w.ModifiedAt, w.ModifiedBy));
+                w.Country.Name, w.CreatedByUser.FullName));
             
             return BaseResponse<IEnumerable<WarehouseDto>>
                 .Success(data: warehousesMapped, totalCount: enumerable.Count(), message: "Warehouses retrieved successfully");

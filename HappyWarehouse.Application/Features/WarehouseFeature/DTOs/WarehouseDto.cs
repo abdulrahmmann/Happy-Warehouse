@@ -1,4 +1,4 @@
 ﻿namespace HappyWarehouse.Application.Features.WarehouseFeature.DTOs;
 
-public record WarehouseDto(int Id, string Name, string Address, string City, int CountryId, int CreatedByUserId, 
-    DateTime? CreatedAt, string? CreatedBy, DateTime? ModifiedAt,  string? ModifiedBy);
+public record WarehouseDto(int Id, string Name, string Address, string City, string CountryName, string CreatedByUser);
+public record WarehouseDto2(int Id, string Name, string Address, string City, string CountryName, int  CreatedByUserId);
