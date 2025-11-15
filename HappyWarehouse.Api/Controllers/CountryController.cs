@@ -8,14 +8,16 @@ using HappyWarehouse.Application.Features.CountryFeature.DTOs;
 using HappyWarehouse.Application.Features.CountryFeature.Queries.GetAll;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HappyWarehouse.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
+    [EnableCors]
     public class CountryController(Dispatcher dispatcher, IRedisCacheService cacheService) : AppControllerBase
     {
         #region GET Endpoints
@@ -30,8 +32,8 @@ namespace HappyWarehouse.Controllers
                 return NewResult(cachedCountry);
             }
             
-            var command = new GetAllCountriesQuery();
-            var response = await dispatcher.SendQueryAsync<GetAllCountriesQuery, BaseResponse<IEnumerable<CountryDto>>>(command);
+            var query = new GetAllCountriesQuery();
+            var response = await dispatcher.SendQueryAsync<GetAllCountriesQuery, BaseResponse<IEnumerable<CountryDto>>>(query);
             
             cacheService.SetData("all-countries", response);
             
@@ -49,7 +51,7 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [HttpPost("create-country-list")]
         public async Task<IActionResult> CreateCountryList([FromBody] IEnumerable<CreateCountryDto> countriesDto)
         {

@@ -43,7 +43,7 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "User,Admin,Management,Auditor")]
         [HttpPut("change-password")]
         public async Task<IActionResult> ChangePassword([FromQuery] string email, [FromBody] ChangePasswordDto passwordDto)
         {
@@ -70,7 +70,7 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         
-        [Authorize(Roles = "Admin,Auditor")]
+        [Authorize(Roles = "User,Admin,Management,Auditor")]
         [HttpGet("all")]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -88,7 +88,7 @@ namespace HappyWarehouse.Controllers
             return Ok(user);
         }
         
-        [HttpPost("generate-new-access-token")]
+        [Authorize(Roles = "User,Admin,Management,Auditor")]
         public async Task<IActionResult> GenerateNewAccessToken(TokenModel tokenModel)
         {
             var command = new GenerateNewAccessTokenCommand(tokenModel);

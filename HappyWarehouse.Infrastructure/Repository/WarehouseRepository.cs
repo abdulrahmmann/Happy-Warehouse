@@ -80,7 +80,7 @@ public class WarehouseRepository: GenericRepository<Warehouse>, IWarehouseReposi
 
     public IQueryable<Warehouse> GetAllQueryable()
     {
-        return _dbContext.Warehouses.Include(w => w.Country).Include(w => w.CreatedByUser).AsNoTracking();
+        return _dbContext.Warehouses.Include(w => w.Country).Include(w => w.CreatedByUser).Where(x => !x.IsDeleted).AsNoTracking();
     }
     
     public async Task<Warehouse> FirstOrDefaultAsync(Expression<Func<Warehouse, bool>> predicate, CancellationToken cancellationToken)

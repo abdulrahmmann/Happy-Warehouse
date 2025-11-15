@@ -7,18 +7,20 @@ using HappyWarehouse.Application.Features.WarehouseItemFeature.DTOs;
 using HappyWarehouse.Application.Features.WarehouseItemFeature.Queries.GetItemByWarehouseId;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HappyWarehouse.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
+    [EnableCors]
     public class WarehouseItemsController(Dispatcher dispatcher, IRedisCacheService cacheService) : AppControllerBase
     {
         #region GET Endpoints
-        [AllowAnonymous]
+        [Authorize(Roles = "User,Admin,Management,Auditor")]
         [HttpGet("get-items/{warehouseId}")]
         public async Task<IActionResult> GetItemsByWarehouseId(int warehouseId)
         {
@@ -29,8 +31,8 @@ namespace HappyWarehouse.Controllers
                 return NewResult(cachedWarehouseItems);
             }
             
-            var command = new GetItemsByWarehouseIdQuery(warehouseId);
-            var response = await dispatcher.SendQueryAsync<GetItemsByWarehouseIdQuery, BaseResponse<IEnumerable<WarehouseItemDto>>>(command);
+            var query = new GetItemsByWarehouseIdQuery(warehouseId);
+            var response = await dispatcher.SendQueryAsync<GetItemsByWarehouseIdQuery, BaseResponse<IEnumerable<WarehouseItemDto>>>(query);
             
             cacheService.SetData(cachedKey, response);
             
@@ -39,7 +41,7 @@ namespace HappyWarehouse.Controllers
         #endregion
         
         #region POST Endpoints
-        [AllowAnonymous]
+        [Authorize(Roles = "User")]
         [HttpPost("create-item")]
         public async Task<IActionResult> CreateItem([FromBody] CreateWarehouseItemDto itemDto)
         {
@@ -48,7 +50,7 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         
-        [AllowAnonymous]
+        [Authorize(Roles = "User")]
         [HttpPost("create-item-list")]
         public async Task<IActionResult> CreateItemsList([FromBody] IEnumerable<CreateWarehouseItemDto> itemsDto)
         {

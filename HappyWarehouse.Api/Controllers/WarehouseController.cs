@@ -12,18 +12,20 @@ using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehouses
 using HappyWarehouse.Application.Features.WarehouseFeature.Queries.GetWarehousesWithItems;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HappyWarehouse.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
+    [EnableCors]
     public class WarehouseController(Dispatcher dispatcher, IRedisCacheService cacheService) : AppControllerBase
     {
         #region GET Endpoints
-        [AllowAnonymous]
+        [Authorize(Roles = "User,Admin,Management,Auditor")]
         [HttpGet("warehouses")]
         public async Task<IActionResult> GetAllWarehouses(int pageNumber = 1, int pageSize = 10)
         {
@@ -42,7 +44,7 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         
-        [AllowAnonymous]
+        [Authorize(Roles = "User,Admin,Management,Auditor")]
         [HttpGet("warehouses-with-items")]
         public async Task<IActionResult> GetWarehousesWithItems()
         {
@@ -61,7 +63,7 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         
-        [AllowAnonymous]
+        [Authorize(Roles = "User,Admin,Management,Auditor")]
         [HttpGet("by-id/{id}")]
         public async Task<IActionResult> GetWarehousesById(int id)
         {
@@ -82,7 +84,7 @@ namespace HappyWarehouse.Controllers
         #endregion
 
         #region POST Endpoints
-        [AllowAnonymous]
+        [Authorize(Roles = "User")]
         [HttpPost("create-warehouse")]
         public async Task<IActionResult> CreateWarehouse([FromBody] CreateWarehouseDto warehouseDto)
         {
@@ -91,7 +93,7 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         } 
         
-        [AllowAnonymous]
+        [Authorize(Roles = "User")]
         [HttpPost("create-warehouse-list")]
         public async Task<IActionResult> CreateWarehousesList([FromBody] IEnumerable<CreateWarehouseDto> warehousesDto)
         {
@@ -102,7 +104,7 @@ namespace HappyWarehouse.Controllers
         #endregion
 
         #region PUT Endpoints
-        [AllowAnonymous]
+        [Authorize(Roles = "User")]
         [HttpPut("update-warehouse/{id}")]
         public async Task<IActionResult> UpdateWarehouse(int id, [FromBody] UpdateWarehouseDto warehouseDto)
         {
@@ -111,7 +113,7 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         } 
         
-        [AllowAnonymous]
+        [Authorize(Roles = "User")]
         [HttpPut("restore-warehouse/{id}")]
         public async Task<IActionResult> RestoreWarehouse(int id, string? restoreBy)
         {
@@ -122,7 +124,7 @@ namespace HappyWarehouse.Controllers
         #endregion
         
         #region DELETE Endpoints
-        [AllowAnonymous]
+        [Authorize(Roles = "User")]
         [HttpDelete("delete-warehouse/{id}")]
         public async Task<IActionResult> DeleteWarehouse(int id)
         {

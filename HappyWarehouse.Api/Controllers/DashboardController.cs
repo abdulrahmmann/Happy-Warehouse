@@ -7,17 +7,19 @@ using HappyWarehouse.Application.Features.DashboardFeature.Queries.GetWarehouseW
 using HappyWarehouse.Application.Features.DashboardFeature.Queries.WarehouseTopItems;
 using HappyWarehouse.Domain.CQRS;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HappyWarehouse.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
+    [EnableCors]
     public class DashboardController(Dispatcher dispatcher, IRedisCacheService cacheService) : AppControllerBase
     {
-        [AllowAnonymous]
+        [Authorize(Roles = "User,Admin,Management,Auditor")]
         [HttpGet("warehouse-status")]
         public async Task<IActionResult> GetWarehouseStatus()
         {
@@ -36,7 +38,7 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         
-        [AllowAnonymous]
+        [Authorize(Roles = "User,Admin,Management,Auditor")]
         [HttpGet("top-warehouse-items")]
         public async Task<IActionResult> GetTopItems(int top = 10)
         {
@@ -55,7 +57,7 @@ namespace HappyWarehouse.Controllers
             return NewResult(response);
         }
         
-        [AllowAnonymous]
+        [Authorize(Roles = "User,Admin,Management,Auditor")]
         [HttpGet("warehouse-inventory-details")]
         public async Task<IActionResult> GetWarehouseWithInventoryDetails(int page = 1, int pageSize = 20)
         {

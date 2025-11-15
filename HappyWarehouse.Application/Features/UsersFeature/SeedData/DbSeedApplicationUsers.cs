@@ -32,10 +32,24 @@ namespace HappyWarehouse.Application.Features.UsersFeature.SeedData
                         logger.Error($"Failed to create role '{roleName}': {string.Join(", ", result.Errors.Select(e => e.Description))}");
                 }
             }
-
+            
             var users = new List<(ApplicationUser User, string Password, string Role)> 
             {
             // 5 Admin
+            (
+                new ApplicationUser
+                {
+                    UserName = "admin@happywarehouse",
+                    Email = "admin@happywarehouse.com",
+                    FullName = "Admin Happy Warehouse",
+                    PhoneNumber = "+962783363098",
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    LockoutEnabled = false
+                },
+                "Admin@happywarehouse+962783363098",
+                Roles.Admin
+            ),
             (
                 new ApplicationUser
                 {
